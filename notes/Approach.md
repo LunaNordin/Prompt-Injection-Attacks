@@ -43,7 +43,7 @@
 #### Shi et al.
 - Gradient-based attack prompt optimization
 - Specifically targeting LLM-as-a-judge
-	- First examples of attack scenarios with impact beyond direct user-LLM-intercation
+	- First examples of attack scenarios with impact beyond direct user-LLM-interaction
 	- E.g. search engines and tool selection
 - Naive attacks (compare early approaches) are almost completely ineffective on newer models
 	- So there is some progress in model robustness
@@ -89,7 +89,7 @@
 
 - I will mainly focus on the first two points as the content of my paper
 	- First point gives an overview of the papers and will therefor take up most of the content
-	- Second point is useful to regularly come back to and conncet papers more strongly
+	- Second point is useful to regularly come back to and connect papers more strongly
 		- The more additional data I find to back up this point the better I can use it in the main part of my paper
 - The last two points are mainly motivation/background
 	- I will use these in the introduction, conclusion and outlook
@@ -99,3 +99,19 @@
 		- ==Could I elaborate more on that, since there is no seminar topic for defenses of prompt injection?==
 		- Some interesting approaches might be in XAI and mechanistic interpretability
 			- But needs white-box access which is not always possible
+
+## Feedback from Qi
+- Explain why old approaches do not work any more later on
+	- E.g. old attack prompts were used for fine-tuning, etc.
+- Which parts can be automated and why (not)?
+	- Do not just mention partial automation as developments of adversarial prompt generation
+	- Explain in detail why certain parts were chosen to be automated and which other parts can be
+	- Are there any potential bottlenecks or parts that are difficult to automate?
+- Find common scenarios and threat models
+	- Compare papers assumptions and find similarities
+	- E.g. black-box access, using surrogate datasets/models for gradient methods, etc.
+- Make conceptual difficulty with defenses a separate chapter
+	- Circle back to why all papers found defenses to be ineffective
+	- Show similarities between available defense approaches
+		- Only explain individual defenses very briefly as examples
+	- Maybe touch on some potential solutions for this problem
