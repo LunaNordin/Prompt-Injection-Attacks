@@ -1,0 +1,99 @@
+- Abstract
+- Introduction
+	- Increasing use of LLMs
+	- LLM integration in applications
+		- Agentic AI, fully automated steps, robotics
+	- Less direct supervision by humans
+	- More consequential actions/decisions made by LLMs
+	- Increasingly attractive target
+		- Controlling AI-supervised processes
+		- Financial incentive e.g. in search
+	- Integration into applications is not backed by sufficient robustness
+	- Intent of the paper
+		- Systematize prompt injection attacks
+		- Focus on development and techniques since late 2022
+		- Highlight persistent lack in robustness
+		- Touch on proposed defenses and conceptual defense difficulties
+- Background
+	- ==Use the formal definitions of Liu et al. here==
+	- LLM-based applications
+		- Instructions, prompts, external data
+	- Black-box approaches
+	- Prompt injection attacks
+		- Subgoals (e.g. prompt leaking)
+- Manual Prompt Construction
+	- Perez et al. early use of GPT-3
+	- Basic prompting techniques
+		- Can be used for adversarial or non-adversarial prompts
+	- Varying hyperparameters
+	- Little interference through model refusal
+		- Even though novelty of GPT-3 is RLHF
+		- So RLHF does not automatically make model robust
+		- In this case the advantage/goal of RLHF is instruction following
+			- Although some correlation between attack harmfulness and refusal -> RLHF good candidate for increasing robustness
+	- High success with very simple methods
+		- Applicably by any user within seconds
+	- Correlation between model instruction following and attack success
+		- Limiting factor here is not model defenses/robustness but instruction following
+			- So there are de facto no defenses to speak of
+		- Model that can not follow instructions well can not follow adversarial instructions
+	- Overall very high attack success only hindered by model capabilities
+		- Adversarial scenarios clearly were not considered in the design of the model
+- Automation
+	- Deng et al. use LLMs for prompt optimization
+	- Mainly saves time on costly human iterations
+		- LLMs can generate many combinations of similar prompts to be evaluated in a short time
+	- Need for manual baseline prompts
+		- Quality and diversity of initial prompts likely influences final success rate
+		- LLMs for optimization unlikely to find completely novel attack strategies
+	- Only discrete optimization
+		- No possibility to adjust prompts in embedding space
+	- Semi-automatic approach outperforms manually crafted prompts
+	- Comparison to RLHF in Perez et al.
+		- RLHF is shown to make models more robust but only slightly
+		- This is no GPT-3.5 but still the focus of RLHF seems to be instruction following and not attack robustness
+- Formalization
+	- ==Formal definitions already introduced in Background chapter -> highlight formalization/standardization and focus on extensive attack/model/defense comparison==
+	- Widely accepted formal definition of LLM-integrated applications and injection attacks
+		- Two years after Perez et al.
+	- Comparison of threat models
+		- All use black-box-approaches, knowledge about model and instructions, uneditable instructions, manipulatable data
+	- Comparison of many attack strategies, LLMs, tasks, datasets, and defenses
+		- Two years after Perez et al. more powerful model still correlates with higher attack success
+		- Easier and "smaller" adversarial tasks are easier to inject
+		- Still no effective defense
+- Gradient-Based Prompt Optimization
+	- ==Split this into two chapters for the two papers?==
+	- Gradient-based approaches need access to model weights
+		- Both Shi et al. and Hui et al. use similar workarounds
+		- Construction of shadow datasets
+		- Optimization on similar "clone" of actual application
+		- Optimized attacks generalize well to new applications even with different models
+	- Both papers use more realistic scenarios
+		- Shi et al. argue with use of LLM-as-a-judge in search, tool selection and RLAIF
+		- Hui et al. attack publicly available applications
+	- Gradient descent methods not so dependent on initial prompt
+		- More optimized and potentially novel attack approaches compared to LLM-based reformulation done by Deng et al.
+		- More training data needed but better optimization
+	- Both use active evasion of defenses
+		- Shi et al. use perplexity loss term
+		- Hui et al. use adversarial transformations
+	- Shi et al. use gradient descent with specialized loss
+		- Multiple loss terms to balance several objectives
+			- Objectives can be based on certain application details (e.g. in this case robustness against change in order of judge's candidates)
+		- Replacing individual discrete tokens so no continuous optimization in embedding space
+		- Attack prompt has fixed length
+		- Manual attacks are not very effective
+			- In comparison to Perez et al. effectiveness likely decreased with newer models
+			- However no direct comparison to Perez et al. only similar approach
+	- Hui et al. use incremental optimization
+		- Incremental optimization
+			- Optimizing for increasingly long targets to efficiently cover large search space
+		- Adversarial transformations
+			- To evade multiple different types of possible defenses
+		- Also replace embedding vectors of discrete tokens
+			- So they compare performance in embedding space, but the method is still token discrete and not continuous
+		- Direct comparison with Perez et al.
+			- Shows that old manual attacks are ineffective for newer models
+- Challenges of Instruction-Data Integration
+- Conclusion

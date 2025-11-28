@@ -42,6 +42,7 @@
 
 #### Shi et al.
 - Gradient-based attack prompt optimization
+	- Multiple, balanced optimization goals
 - Specifically targeting LLM-as-a-judge
 	- First examples of attack scenarios with impact beyond direct user-LLM-interaction
 	- E.g. search engines and tool selection
@@ -56,7 +57,6 @@
 #### Hui et al.
 - Focus on prompt leaking (compare Perez et al.)
 - More elaborate gradient-based method
-	- Multiple, balanced optimization goals
 	- Iterative optimization
 	- Adversarial transformations
 - Direct comparison to Perez et al.
