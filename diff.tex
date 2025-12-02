@@ -1,0 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Compile this file to create a latexdiff output between the 
+% version of the paper that was submitted for review (tagged
+% 'review_submission' in git repo) and the current project
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{shellesc}
+\ShellEscape{latexdiff main_diff.tex main.tex --flatten > main-d.tex}
+\sloppy % needed to prevent many overfull hboxes
+\input{main-d}
+\documentclass{dummy}
+\title{Creating a latexdiff}
