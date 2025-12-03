@@ -1,0 +1,39 @@
+\section{Background}
+The term prompt injection attack does not describe a specific attack against an LLM but rather a family or group of related attacks with similar modes of action and threat models.
+In this section, we introduce some general definitions that can be applied to any prompt injection attack.
+The definitions are mainly based on the formalization of prompt injection attacks by \liu.
+We will go into more details on specific prompt injections in the following section and discuss how the formalization of \liu relates to pre-existing prompt injection frameworks in~\cref{add_later}.
+
+\subsection{LLM-Integrated Applications}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\linewidth]{add_later.png}
+    \caption{}
+    \Description[<>]{<>}
+    \label{fig:llm_application}
+\end{figure}
+
+An LLM-integrated application ties together three external components.
+The first component is an LLM $f$, which is controlled and managed by the application.
+The second component is a user interacting with the application.
+It is important to notice that, contrary to the colloquial term "using an LLM", the user does not directly access the LLM but only interacts with it through the LLM-integrated application.
+The third component is any external data $\textbf{x}$ that is processed by the application.
+This data is often, but not exclusively, text-based and can incorporate a wide range of information types like web pages, source code, and different document types.\\
+
+The basic functionality of an LLM-integrated application is to utilize the LLM $f$ in order to process external data on behalf of the user.
+To do so, the LLM is provided with a prompt $\textbf{p}$ consisting of textual instructions $\textbf{s}$ and external data $\textbf{x}$.
+While the simplest way to combine instructions and data is through simple concatenation in the form of prefix prompts, there are other possible approaches.
+In general, the data can be joined with the instructions through slot-filling with an arbitrary number and distribution of slots within the instructions.
+We denote the arbitrary combination of instruction and data into a prompt with the notation $\textbf{p} = \textbf{s} \circ \textbf{x}$
+The instructions themselves can consist of parts originating from the user and the application.
+Instructions from the application $\textbf{s}^a$, often referred to as the system prompt, usually define guard rails or steer the model towards a specific task that is intended by the application.
+User instructions $\textbf{s}^u$ might contain a more specific task description, directly provided information, or in-context learning examples.
+Analogously to the construction of the prompt, user and application instructions can be combined arbitrarily: $\textbf{s} = \textbf{s}^a \circ \textbf{s}^u$
+\\
+
+The prompt $p$ is processed by the application's internal LLM and converted into the response $\textbf{r} = f(\textbf{p})$ that is returned to the user.
+\Cref{fig:llm_application} depicts the connections between application, LLM, user, and external data.
+This high-level definition of an LLM-integrated application allows it to cover diverse real-world applications while still providing a common framework for prompt injection attacks.
+Such real-world applications include the GUIs of popular LLMs like ChatGPT, Gemini, and Claude, as well as third-party services and even the incorporation of LLMs in application processes without the user being aware of their use.
+
+\subsection{Prompt Injection Attacks}
