@@ -1,4 +1,4 @@
-\section{Background}
+\section{Background} \label{sec:background}
 The term prompt injection attack does not describe a specific attack against an LLM but rather a family or group of related attacks with similar modes of action and threat models.
 In this section, we introduce some general definitions that can be applied to any prompt injection attack.
 The definitions are mainly based on the formalization of prompt injection attacks by \liu
@@ -64,10 +64,10 @@ This demonstrates that prompt injection attacks are fundamentally based on the m
 We further discuss this fundamental problem in~\cref{add_later}\\
 
 The general definition of prompt injection attacks by \liu only describes the fundamental characteristic shared amongst all prompt injection variants.
-The variety of prompt injection attacks found in the literature is created by two main parameters.
+Two main parameters create the variety of prompt injection attacks found in the literature.
 One parameter is the injected task defined by the attacker, the spectrum of which can be as broad as the target tasks of various applications.
 A prominent example is the leaking of the system prompt by the LLM.
 The other parameter is the definition of the attack function $\mathpzc{A}$.
-Just like with the construction of prompts shown in~\cref{eq:prompt_constr} the naive approach is two concatenate the instruction data with the components injected by the attacker.
-However much more complex approaches can be used which can be adjusted to the attacked application's LLM, target task and the injected task.
+Just like with the construction of prompts shown in~\cref{eq:prompt_constr}, the naive approach is to concatenate the instruction data with the components injected by the attacker.
+However, much more complex approaches can be used, which can be adjusted to the attacked application's LLM, target task, and the injected task.
 By presenting and discussing several case studies in the following chapters, we provide an overview of the variety of prompt injection techniques with different injected tasks and attack approaches.
