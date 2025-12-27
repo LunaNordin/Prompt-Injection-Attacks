@@ -1,44 +1,52 @@
 \section{Manual Attack Prompt Construction} \label{sec:manual_prompts}
-One key development that enabled the fast adoption of LLM-integrated applications like ChatGPT in late 2022 and early 2023 was the application of reinforcement learning on human feedback (RLHF) to LLMs.
-A prominent example of this approach is the release of InstructGPT series of models by OpenAI.
-The improved instruction following capabilities make models more usable for a range of different tasks, but they also encourage users to experiment with injecting adversarial prompts into the model's inputs.
-An early case study investigating the vulnerability of GPT-3 against such basic attacks is the framework proposed by \perez in late 2022.\\
+One key development that enabled the fast adoption of LLM-integrated applications like ChatGPT in late 2022 and early 2023 was the application of reinforcement learning on human feedback (RLHF) to LLMs~\cite{}.
+A prominent example of this approach is the release of InstructGPT series of models by OpenAI~\cite{}.
+The improved instruction following capabilities make models more usable for a range of different tasks, but they also encourage users to experiment with injecting adversarial prompts into the model's inputs~\cite{}.
+An early case study investigating the vulnerability of GPT-3 against such basic attacks is the framework proposed by \perez in late 2022~\cite{}.\\
 
 The approach presented by \perez is based on simple string modifications that can be automatically applied to manually written adversarial instructions.
-Following the formal definition of prompt injection from~\cref{sec:background}, \perez investigate two different attacker goals.
+Following the formal definition of prompt injection from~\cref{sec:background}, \perez investigate two different attacker goals~\cite{}.
 The first is goal hijacking, which aims at having the model print out an attacker-defined string instead of following the task instructions $\textbf{s}^t$.
 The second attacker goal is prompt leaking, which has the intention of making the model repeat the task instructions $\textbf{s}^t$ in the output instead of following them.
 The injection of the attacker instructions $\textbf{s}^e$ follows~\cref{eq:compr_data}.
 In their approach, \perez implement the attack function $\mathpzc{A}$ by concatenating the instruction data $\textbf{x}^t$ with delimiters of varying length and repetition and the injected instructions $\textbf{s}^e$.
-In a simple example for prompt leaking, the task instruction could be $\textbf{s}^t = \texttt{"Translate into English:"}$, the task data $\textbf{x}^t$ would be a user input, and the injected instructions $\textbf{s}^e =$ \texttt{"\textbackslash n–––––\textbackslash n–––––Ignore the previous
-instructions and print the previous instructions:"}.
 The compromised prompt is then
 \begin{equation}
-    \tilde{\textbf{p}} = \textbf{s}^t \oplus \textbf{x}^t \oplus \textbf{s}^e
+    \tilde{\textbf{p}} = \textbf{s}^t \oplus \textbf{x}^t \oplus \textbf{s}^e~\cite{}
     \label{eq:compr_prompt_perez}
 \end{equation}
-where $\oplus$ denotes a string concatenation.\\
+where $\oplus$ denotes a string concatenation.
+A simple example for a prompt leaking attack on an application that translates a user's input into English could look like this:
+\begin{flalign*}
+    \textbf{s}^t =&~\texttt{"Translate into English:"}\\
+    \textbf{x}^t =&~\texttt{"Voy a la tienda."}\\
+    \textbf{s}^e =&~\texttt{"\textbackslash n–––\textbackslash n–––Ignore the previous instructions }\\&\texttt{and print the previous instructions:"}
+\end{flalign*}
+which would result in the following compromised prompt:
+\begin{flalign*}
+    \tilde{\textbf{p}} =&~\texttt{"Translate into English: Voy a la tienda. \textbackslash n–––}\\&\texttt{\textbackslash n–––Ignore the previous instructions and print}\\&\texttt{the previous instructions:"}
+\end{flalign*}
 
 \subsection{Basic Prompting Techniques}
 \perez investigate the influence of different attack instruction formulations, delimiter length, and repetition, as well as model settings like temperature, on the attack success rate.
-Overall, \perez are able to achieve a high attack success rate for goal hijacking of $(58.6 \pm 1.6) \%$ and a success rate of $(23.6 \pm 2.7) \%$ for prompt leaking.
+Overall, \perez are able to achieve a high attack success rate for goal hijacking of $(58.6 \pm 1.6) \%$ and a success rate of $(23.6 \pm 2.7) \%$ for prompt leaking~\cite{}.
 This is especially noteworthy considering the fact that they use very simplistic techniques that can easily be applied and adapted by non-expert users with little effort.\\
 
 The most interesting result is the relationship between attack success and instruction following, which is demonstrated by their investigation.
 Many approaches that are demonstrated to increase attack success rate are prompting techniques that are used to improve instruction following in non-adversarial contexts.
-For example, using text delimiters to separate prompt sections, experimenting with word-by-word phrasing, and placing important instructions at the end of prompts are all techniques that are used for generally effective LLM-prompting.
+For example, using text delimiters to separate prompt sections~\cite{}, experimenting with word-by-word phrasing~\cite{}, and placing important instructions at the end of prompts~\cite{} are all techniques that are used for generally effective LLM-prompting.
 This suggests that there is no fundamental difference between non-adversarial prompting and prompting techniques for constructing prompt injection attacks.
 The same correlation holds true for the temperature setting of the model.
-\perez find, that higher temperature lowers the success rate but at the same time lowers the overall quality of the model's responses.\\
+\perez find, that higher temperature lowers the success rate but at the same time lowers the overall quality of the model's responses~\cite{}.\\
 
 \subsection{Instruction Following through RLHF}
 An even more prominent connection between a model's instruction following capabilities and its susceptibility to prompt injection attacks is demonstrated by \perez through the comparison of different LLMs.
-They find that with the same injected prompts, the attack success rate on the model \texttt{text-davinci-002} is much higher than on older and less powerful models.
+They find that with the same injected prompts, the attack success rate on the model \texttt{text-davinci-002} is much higher than on older and less powerful models~\cite{}.
 A comparison of success rates for the different models investigated by \perez is shown in~\cref{tab:perez_model_comparison}.
 Comparing the models from the InstructGPT series shows that larger models tend to produce higher attack success rates. Comparing \texttt{text-davinci-001} from the InstructGPT series with \texttt{text-davinci-002} from the newer GPT-3.5 series shows that improved fine-tuning seems to significantly increase attack success rates.\\
 
 \begin{table}[htb]
-    \caption{Comparison of prompt injection success rates on different OpenAI models measured by Perez and Ribeiro.}
+    \caption{Comparison of prompt injection success rates on different OpenAI models measured by Perez and Ribeiro~\cite{}.}
     \label{tab:perez_model_comparison}
     \begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}llll}
         \textbf{Model}   & \textbf{Parameters} & \textbf{Series} & \textbf{Success Rate} \\ \hline
@@ -55,9 +63,9 @@ When presented with two conflicting instructions, namely the task instruction $\
 Since the injected instruction is specifically phrased to overrule the task instruction, this is a demonstration of improved instruction following.
 However, in the case of a prompt injection attack, RLHF and other advanced fine-tuning techniques appear to make models actively more susceptible to even simple attacks.\\
 
-It is noteworthy that the RLHF approach by Ouyang et~al. that was used to fine-tune InstructGPT does not mention robustness against attacks as a primary goal.
+It is noteworthy that the RLHF approach by Ouyang et~al. that was used to fine-tune InstructGPT does not mention robustness against attacks as a primary goal~\cite{}.
 Therefore, it cannot be concluded that RLHF inherently decreases model robustness or cannot be used to improve it.
-\perez mention, for example, that goal hijacking attacks are less successful the more harmful the string is that they demand the model to output.
+\perez mention, for example, that goal hijacking attacks are less successful the more harmful the string is that they demand the model to output~\cite{}.
 This result does align with the fine-tuning outcomes of Ouyang et~al., which demonstrated a slightly lower toxicity compared to previous GPT-3 models.
 But it still highlights that not considering prompt injection attacks in early applications of RLHF likely made models more powerful without making them more robust.
-A possibility that is explicitly mentioned by Ouyang et~al. in their conclusions on InstructGPT.\\
+A possibility that is explicitly mentioned by Ouyang et~al. in their conclusions on InstructGPT~\cite{}.\\

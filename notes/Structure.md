@@ -3,11 +3,14 @@
 	- Increasing use of LLMs
 	- LLM integration in applications
 		- Agentic AI, fully automated steps, robotics
+	- Necessity and function of prompts
+	- Ability to inject instructions
 	- Less direct supervision by humans
 	- More consequential actions/decisions made by LLMs
 	- Increasingly attractive target
 		- Controlling AI-supervised processes
 		- Financial incentive e.g. in search
+	- Diverse and sophisticated attack approaches
 	- Integration into applications is not backed by sufficient robustness
 	- Intent of the paper
 		- Systematize prompt injection attacks
@@ -15,12 +18,34 @@
 		- Highlight persistent lack in robustness
 		- Touch on proposed defenses and conceptual defense difficulties
 - Background
-	- ==Use the formal definitions of Liu et al. here==
-	- LLM-based applications
+	- Use the formal definitions of Liu et al. here
+	- Prompt engineering
 		- Instructions, prompts, external data
-	- Black-box approaches
+		- Prompt engineering
+	- Threat model
+		- Common parts of all/most approaches
+		- Attacker goal
+			- Arbitrary model response
+			- Attacker chosen
+			- Close/different from original response
+			- Main difference between attacks
+				- Chosen approach can vary based on goal
+				- But all approaches have same basic goal
+		- Attacker capabilities
+			- Data injection
+				- Add data to prompt
+					- Arbitrary data type, length
+				- No changing the user data
+				- No backend manipulation
+			- Acquire system knowledge
+				- LLM model, instruction prompt, processing pipeline
+				- Not in all approaches
+					- E.g. prompt leaking cannot assume instruction prompt
 	- Prompt injection attacks
 		- Subgoals (e.g. prompt leaking)
+	- Prompt injection methods
+		- Manual prompt construction and automation
+		- Gradient-based prompt optimization
 - Manual Prompt Construction
 	- Perez et al. early use of GPT-3
 	- Basic prompting techniques
@@ -32,7 +57,7 @@
 		- In this case the advantage/goal of RLHF is instruction following
 			- Although some correlation between attack harmfulness and refusal -> RLHF good candidate for increasing robustness
 	- High success with very simple methods
-		- Applicably by any user within seconds
+		- Applicable by any user within seconds
 	- Correlation between model instruction following and attack success
 		- Limiting factor here is not model defenses/robustness but instruction following
 			- So there are de facto no defenses to speak of
@@ -53,17 +78,17 @@
 		- RLHF is shown to make models more robust but only slightly
 		- This is no GPT-3.5 but still the focus of RLHF seems to be instruction following and not attack robustness
 - Formalization
-	- ==Formal definitions already introduced in Background chapter -> highlight formalization/standardization and focus on extensive attack/model/defense comparison==
+	- ==Potentially remove this chapter since Liu et al. is already sufficiently covered in other chapters==
+	- Formal definitions already introduced in Background chapter -> highlight formalization/standardization and focus on extensive attack/model/defense comparison
 	- Widely accepted formal definition of LLM-integrated applications and injection attacks
 		- Two years after Perez et al.
-	- Comparison of threat models
-		- All use black-box-approaches, knowledge about model and instructions, uneditable instructions, manipulatable data
 	- Comparison of many attack strategies, LLMs, tasks, datasets, and defenses
 		- Two years after Perez et al. more powerful model still correlates with higher attack success
 		- Easier and "smaller" adversarial tasks are easier to inject
 		- Still no effective defense
 - Gradient-Based Prompt Optimization
-	- ==Split this into two chapters for the two papers?==
+	- Motivation: older prompt construction methods do not work on newer models
+		- Therefor something better is needed
 	- Gradient-based approaches need access to model weights
 		- Both Shi et al. and Hui et al. use similar workarounds
 		- Construction of shadow datasets

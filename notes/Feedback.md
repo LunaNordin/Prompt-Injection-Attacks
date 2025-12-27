@@ -1,0 +1,67 @@
+### Second Meeting with Qi
+
+#### Questions
+- I am of course going to add references and images, I just did not have time for that yet
+- I might add some additional examples for better readability
+	- I did not do that yet to first see how long the paper ends up being so that I can decide how many examples I can add and where they are most needed
+- Is it ok to write "we" in the background chapter even though the definitions are heavily based on Liu et al.?
+	- I am of course going to reference Liu, but since I am the one introducing the notation for my own work I chose to use "we use notation X" rather than "Liu introduces notation X"
+- Is it ok I slightly changed the notation?
+	- I think it is a bit easier to understand that way and applies better to all papers in some edge cases
+- Are chapter and paragraph lengths ok like this, or should I make them even shorter for better readability?
+- Since I already introduced Liu et al.'s formal framework in the background chapter I am going to use the chapter on that paper to discuss their comparison of different approaches, models, and defenses
+- I will try to discuss the papers of Shi et al. and Hui et al. in one chapter because it will make it easier to compare the two gradient-based approaches
+	- Is this a good idea or will it just get mixed up and confusing?
+
+#### Feedback
+- Second paragraph in introduction is too long
+	- Make it shorter and merge it with the first paragraph
+	- Keep introduction short and use space for main contents
+- Give more introduction to prompt injection
+	- Why prompts are necessary/useful
+	- Why prompt injection is a threat
+	- Introduction should be more focused on the topic at hand
+		- Many people will decide to read paper based on the introduction so it needs to be reflective of the main topics of the paper
+- Provide a concise goal of own paper at the end of the introduction
+	- Not just a simple agenda with for the individual chapters
+	- Referencing chapters is fine, but the goal of the following work is more important
+- Chapter 2.1
+	- Focus more on how prompts are used and build for LLMs and LLM applications
+	- Not so much on LLM applications and more on prompt engineering
+		- Liu has strong emphasis on applications, but that is not really necessary
+		- At lest for the systematization it is not important how exactly the LLM is used, only how it is attacked
+	- Focusing more on prompt engineering also makes transition into next section on prompt injection more seamless
+	- Maybe mention examples of LLM applications at the end of the chapter as a use of engineered prompts
+- Add chapter on threat model after the background chapter
+	- Introduce basic threat model shared between all presented approaches
+	- Reference back to this when individual approaches slightly differ from the standard
+		- For example add something to it
+	- This takes another thing away from the chapter on Liu et al.
+		- If that means there is not enough left to do a chapter for that paper that is fine
+		- The most important parts are in the background, threat model chapters
+- Do an overview section on taxonomy of prompt injection methods
+	- Each step in the "timeline" once described very shortly
+	- Maybe a table for comparison of different approaches
+	- Each paper still gets its own dedicated chapter
+		- But doing a short taxonomy first provides better overview for the reader
+- Use the fact that old methods become less effective as a motivation for newer methods like gradient based methods
+	- This creates an easy transition into more advanced methods
+	- Still summarize the full results of the papers later
+	- Just preempt the results of old methods being ineffective first as a motivation
+		- Then come back to that later
+- Using "we" for introducing the notation is fine
+	- Maybe mention more that is adapted from Liu et al.
+	- Explicitly highlight the differences to the original notation a bit more
+- Give an example for string concatenation
+	- Just expand the example in the background chapter to explicitly write out the concatenated result
+- When comparing Shi et al. and Hui et al. in one chapter
+	- First focus on shared goal or motivation to explain why both methods are discussed together
+	- Introduce method one as a baseline
+	- Introduce method two while clearly mentioning the differences to method one
+		- Try to find a good separation into paragraphs
+- Last chapter on Instruction-Data Integration
+	- Do not only explain the challenge
+	- Also give an outlook on possible solutions and future work
+- Add empty citations early
+	- Just like empty references to later chapters
+	- Makes it easier to add citations later
