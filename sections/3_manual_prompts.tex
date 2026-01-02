@@ -27,7 +27,7 @@ which would result in the following compromised prompt:
     \tilde{\textbf{p}} =&~\texttt{"Translate into English: Voy a la tienda. \textbackslash n–––}\\&\texttt{\textbackslash n–––Ignore the previous instructions and print}\\&\texttt{the previous instructions:"}
 \end{flalign*}
 
-\subsection{Basic Prompting Techniques}
+\subsection{Basic Prompting Techniques} \label{sec:basic_prompting_techniques}
 \perez investigate the influence of different attack instruction formulations, delimiter length, and repetition, as well as model settings like temperature, on the attack success rate.
 Overall, \perez are able to achieve a high attack success rate for goal hijacking of $(58.6 \pm 1.6) \%$ and a success rate of $(23.6 \pm 2.7) \%$ for prompt leaking~\cite{}.
 This is especially noteworthy considering the fact that they use very simplistic techniques that can easily be applied and adapted by non-expert users with little effort.\\
@@ -39,11 +39,13 @@ This suggests that there is no fundamental difference between non-adversarial pr
 The same correlation holds true for the temperature setting of the model.
 \perez find, that higher temperature lowers the success rate but at the same time lowers the overall quality of the model's responses~\cite{}.\\
 
-\subsection{Instruction Following through RLHF}
+\subsection{Instruction Following through RLHF} \label{sec:RLHF_instr_following}
 An even more prominent connection between a model's instruction following capabilities and its susceptibility to prompt injection attacks is demonstrated by \perez through the comparison of different LLMs.
 They find that with the same injected prompts, the attack success rate on the model \texttt{text-davinci-002} is much higher than on older and less powerful models~\cite{}.
 A comparison of success rates for the different models investigated by \perez is shown in~\cref{tab:perez_model_comparison}.
-Comparing the models from the InstructGPT series shows that larger models tend to produce higher attack success rates. Comparing \texttt{text-davinci-001} from the InstructGPT series with \texttt{text-davinci-002} from the newer GPT-3.5 series shows that improved fine-tuning seems to significantly increase attack success rates.\\
+Comparing the models from the InstructGPT and GPT-3.5 series shows that larger models tend to produce higher attack success rates. 
+Another noteworthy observation is the fact that \texttt{text-davinci-002} from the newer GPT-3.5 series shows a much higher attack success rate than the older \texttt{text-davinci-001} from the InstructGPT series.
+While the number of parameters is undisclosed for \texttt{text-davinci-002}, an important difference between the two similarly named models is that \texttt{text-davinci-002} was trained using supervised fine-tuning and not RLHF.\\
 
 \begin{table}[htb]
     \caption{Comparison of prompt injection success rates on different OpenAI models measured by Perez and Ribeiro~\cite{}.}
@@ -61,10 +63,11 @@ Comparing the models from the InstructGPT series shows that larger models tend t
 The fact that newer and larger models with better instruction following due to improved fine-tuning are more prone to prompt injection techniques suggests that instruction following capabilities are one of the most important limitations of this attack approach.
 When presented with two conflicting instructions, namely the task instruction $\textbf{s}^t$ and the injected instruction $\textbf{s}^e$, newer and larger models seem to be more likely to follow the second instruction.
 Since the injected instruction is specifically phrased to overrule the task instruction, this is a demonstration of improved instruction following.
-However, in the case of a prompt injection attack, RLHF and other advanced fine-tuning techniques appear to make models actively more susceptible to even simple attacks.\\
+However, in the case of a prompt injection attack, a general capability of following instructions naturally leads to higher attack susceptibility.
+The fact that \texttt{text-davinci-002}, a model trained with supervised fine-tuning instead of RLHF, also shows high attack success rates demonstrates that low robustness cannot be attributed to RLHF, but rather to improved instruction following through fine-tuning in general.\\
 
 It is noteworthy that the RLHF approach by Ouyang et~al. that was used to fine-tune InstructGPT does not mention robustness against attacks as a primary goal~\cite{}.
-Therefore, it cannot be concluded that RLHF inherently decreases model robustness or cannot be used to improve it.
+Therefore, it cannot be concluded that RLHF and other fine-tuning approaches inherently decrease model robustness or cannot be used to improve it.
 \perez mention, for example, that goal hijacking attacks are less successful the more harmful the string is that they demand the model to output~\cite{}.
 This result does align with the fine-tuning outcomes of Ouyang et~al., which demonstrated a slightly lower toxicity compared to previous GPT-3 models.
 But it still highlights that not considering prompt injection attacks in early applications of RLHF likely made models more powerful without making them more robust.
