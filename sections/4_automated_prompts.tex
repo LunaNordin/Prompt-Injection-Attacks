@@ -1,4 +1,4 @@
-\section{Automated Attack Prompt Construction}
+\section{Automated Attack Prompt Construction} \label{sec:automated_prompts}
 The manual construction of attack prompts for prompt injection attacks, as shown in~\cref{sec:manual_prompts}, is able to achieve high attack success rates, mainly by applying general prompting practices to adversarial settings.
 While this approach is well-suited for early experimentation and simple red-teaming tasks, it is also time-consuming and difficult to apply at scale.
 Automating parts of manual prompt construction workflows like the one proposed by \perez alleviates these problems to a certain extent.
@@ -76,14 +76,14 @@ As mentioned in~\cref{sec:RLHF_instr_following}, \perez find that the \texttt{te
 The main difference between the two models is that \texttt{text-davinci-002} is fine-tuned using a supervised fine-tuning approach, while \texttt{text-davinci-001} is fine-tuned with RLHF~\cite{}.\\
 
 \deng make a similar observation in their comparison of \texttt{text-davinci-003} from the GPT-3.5 series with models from the Alpaca series.
-Based on the harmfulness scores from~\cref{tab:deng_model_comparison} they conclude that the GPT-3.5 based models are more robust against prompt injection attacks than the Alpaca models, which are fine-tuned using a self-instruct framework~\cite{}.
+Based on the harmfulness scores from~\cref{tab:deng_model_comparison}, they conclude that the GPT-3.5 based models are more robust against prompt injection attacks than the Alpaca models, which are fine-tuned using a self-instruct framework~\cite{}.
 This conclusion aligns with the findings by \perez and suggests that fine-tuning with RLHF leads to increased model robustness compared to supervised fine-tuning.\\
 
-It is important, to mention several aspects about this qualitative conclusion.
-First of all, the observation by \deng that GPT-3.5 series models are more robust against prompt injection attacks than Alpaca models is based on the comparison of models which likely differ in size.
+It is important to mention several aspects about this qualitative conclusion.
+First of all, the observation by \deng that GPT-3.5 series models are more robust against prompt injection attacks than Alpaca models is based on the comparison of models that likely differ in size.
 While the parameter numbers of the Alpaca models used by \deng are known, the parameter numbers of the GPT-3.5 series remain undisclosed~\cite{}.
 At least the \texttt{text-davinci-003} model is likely to have a much higher parameter number compared to the Alpaca models, which could impact robustness.
 Second, there is no data available to directly compare the findings by \perez and \deng
-The comparison is only based on the findings that in both works RLHF fine-tuned models are less susceptible to prompt injection attacks than comparable models using supervised fine-tuning.
+The comparison is only based on the findings that in both works, RLHF fine-tuned models are less susceptible to prompt injection attacks than comparable models using supervised fine-tuning.
 Lastly, the comparison of RLHF and supervised fine-tuning relies on the empirical comparison of existing models.
-The fact that models fine-tuned with RLHF are more robust does not mean, that RLHF is principle less susceptible to prompt injection attacks or that supervised fine-tuning is unable to produce sufficiently robust LLMs.
+The fact that models fine-tuned with RLHF are more robust does not mean that RLHF is in principle less susceptible to prompt injection attacks or that supervised fine-tuning is unable to produce sufficiently robust LLMs.

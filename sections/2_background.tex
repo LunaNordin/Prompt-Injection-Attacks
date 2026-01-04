@@ -35,7 +35,7 @@ The prompt $\textbf{p}$ is processed by an application's internal LLM and conver
 Such real-world applications include the GUIs of popular LLMs like ChatGPT, Gemini, and Claude, as well as third-party services and even the incorporation of LLMs in application processes without the user being aware of their use.
 The fundamental construction of prompts which we introduce in this section is used by all LLM-integrated applications and serves as the basis of prompt injection attacks.
 
-\subsection{Threat Model}
+\subsection{Threat Model} \label{sec:threat_model}
 Since prompt injection attacks are a cyber security threat in the context of LLMs, their formal definition needs to be associated with a threat model.
 In the following we introduce a general attacker goal and attacker capability that apply to all prompt injection attacks as defined in~\cref{sec:prompt_inj_def}.
 We point out any additions or deviations from this general threat model in the sections on the individual approaches.\\
@@ -75,10 +75,10 @@ Since there are diverse ways of altering the target data $\textbf{x}^t$, we deno
 \end{equation}
 In the case of an attack, the compromised external data $\tilde{\textbf{x}}$ is used to construct a compromised prompt $\tilde{\textbf{p}}$ analogously to~\cref{eq:prompt_constr}:
 \begin{equation}
-    \tilde{\textbf{p}} = \textbf{s}^t \circ \tilde{\textbf{x}}
+    \tilde{\textbf{p}} = \textbf{s}^t \circ \tilde{\textbf{x}},
     \label{eq:compr_prompt_constr}
 \end{equation}
-Considering the compromised data $\tilde{\textbf{x}}$ contains the injected data $\textbf{x}^e$ and more importantly, the injected instructions $\textbf{s}^e$, shows how the attacker takes influence on the LLM.
+which leads to a changed model response $\tilde{\textbf{r}} = f(\tilde{\textbf{p}})$. Considering the compromised data $\tilde{\textbf{x}}$ contains the injected data $\textbf{x}^e$ and more importantly, the injected instructions $\textbf{s}^e$, shows how the attacker takes influence on the LLM.
 This demonstrates that prompt injection attacks are fundamentally based on the mixing of instructions and data in the construction of prompts.
 We further discuss this fundamental problem in~\cref{add_later}\\
 

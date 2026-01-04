@@ -1,0 +1,97 @@
+\section{Gradient-Based Prompt Optimization}
+As mentioned in~\cref{sec:manual_prompts}, \perez achieved high attack success rates when carrying out their manual prompt injection attack against early GPT-3 LLMs in late 2022.
+However, the effectiveness of early approaches, like the one proposed by \perez, decreases over time.
+This becomes evident, for example, when \hui re-evaluate the attack approach of \perez on more modern LLMs in late 2024.
+They find that the attack prompts of \perez are unable to recover any part of a model's system prompt in the majority of the attacks~\cite{}.\\
+
+The ineffectiveness of older prompt injection attacks on modern models is likely due to adjusted fine-tuning.
+Attack prompts from existing prompt injection attacks can be taken into account during the fine-tuning of new LLMs, which reduces the effectiveness of the attacks.
+\deng prove that this works by fine-tuning models on their own attack prompts, which significantly reduces the effectiveness of the attacks~\cite{}.
+Nevertheless, using existing prompt injection attacks to fine-tune new models does not make models fundamentally robust against attacks, which we further discuss in~\cref{add_later}.
+However, it does drive the innovation of new and adapted attack approaches, such as gradient-based attack prompt optimization.
+In the following, we give an overview of these more recent approaches by the example of attack frameworks proposed by \hui and \shi and compare them to the attack approaches discussed in~\cref{sec:manual_prompts} and~\cref{sec:automated_prompts}.
+
+\subsection{Loss Minimization Approach} \label{sec:loss_minimization}
+The approaches of both \hui and \shi follow the same basic principle to create attack prompts for prompt injection attacks.
+They define the attack prompt generation as an optimization problem, using a loss function $\mathcal{L}$ to quantify the deviation of the attacked model's actual response from the response targeted by the attack intention~\cite{}.
+For example, \shi use the negative log-likelihood of the embedding vectors $\textbf{r}_i$ that form the model's response to define the loss of an attack response.
+When the model is given the adversarial prompt $\tilde{\textbf{p}}$, which was built with the injected instructions $\textbf{s}^e$, the model response aimed for by the attack can be expressed as a series of embedding vectors $\tilde{\textbf{r}^*} = \textbf{r}_1^*, \textbf{r}_2^*, ... \textbf{r}_{n_r}^*$.
+Meanwhile the actual response $\tilde{\textbf{r}}$, which might differ from the intended response $\tilde{\textbf{r}}$, can be equivalently expressed as $\tilde{\textbf{r}} = \textbf{r}_1, \textbf{r}_2, ... \textbf{r}_n$.
+The loss of the proposed attack prompt $\tilde{\textbf{p}}$ can then be expressed as:
+\begin{equation}
+    \mathcal{L}(\tilde{\textbf{p}}) = -log \prod_{i=1}^{n_r} \text{Pr}(r_i^*|\tilde{\textbf{p}}, \textbf{r}_1, \textbf{r}_2, ..., \textbf{r}_{i-1})~\cite{}
+    \label{eq:optimization_loss}
+\end{equation}
+In other words, the loss is based on the probability that the model produces the attacker's desired output $\tilde{\textbf{r}^*}$ when injected with the malicious instructions $\tilde{\textbf{p}}$.
+The objective of the attack prompt construction is then to find optimal attack prompts that minimize the loss:
+\begin{equation}
+    \underset{\tilde{\textbf{p}}}{\operatorname{argmin}} \; \mathcal{L}(\tilde{\textbf{p}})
+\end{equation}
+and therefore maximize the probability that the model's response is the desired output $\tilde{\textbf{r}^*}$~\cite{}.\\
+
+To iteratively find a solution to the optimization problem, \hui and \shi use gradient-based approaches~\cite{}.
+This is done in a three-step process.
+In the first step, the responses of the model for a proposed attack prompt dataset are obtained by inputting the injected prompts into the model and collecting the corresponding output.
+In the second step, the loss of the model's responses is calculated according to~\cref{eq:optimization_loss} while considering the attacker's desired responses for the corresponding attack.
+In the third step, the attack prompts are updated to minimize the calculated loss by approximating the loss of updated attack prompts using the gradient.
+These three steps are carried out iteratively either for a certain number of iterations or until the algorithm converges.
+The resulting attack prompt dataset then minimizes the defined loss and therefore maximizes the desired model response in prompt injection attacks on systems using that model.
+The full iterative algorithm is conceptually depicted in~\cref{fig:optimization_alg}.\\
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\linewidth]{add_later.png}
+    \caption{~\cite{}}
+    \Description[<>]{<>}
+    \label{fig:optimization_alg}
+\end{figure}
+
+The main difficulty of this loss-based optimization approach is the discrete nature of the optimization problem.
+In continuous gradient-descent approaches, the gradient of the loss is used to update the optimized parameter directly, typically by subtracting the gradient from the current iteration's input~\cite{}.
+However, not only the model's response $\tilde{\textbf{r}}$, but also the compromised prompt $\tilde{\textbf{p}} = \textbf{p}_1, \textbf{p}_2, ..., \textbf{p}_{n_p}$ are series of embedding vectors.
+Therefore, updates to an attack prompt can only be made discretely by exchanging an embedding vector $\textbf{p}_i$ with an alternative embedding vector $\textbf{p}_i'$.
+This means that no continuous updates can be made to the attack prompt.\\
+
+Both \hui and \shi solve this problem by estimating the impact of changing individual embedding vectors in the attack prompt~\cite{}.
+If an updated attack prompt $\tilde{\textbf{p}}' = \textbf{p}_1, ..., \textbf{p}_{i-1}, \textbf{p}_i', \textbf{p}_{i+1}, ..., \textbf{p}_{n_p}$ is created by exchanging the embedding vector $\textbf{p}_i$ in $\tilde{\textbf{p}}$ with $\textbf{p}_i'$, the loss of the updated prompt can be expressed with~\cref{eq:optimization_loss} as $\mathcal{L}(\tilde{\textbf{p}}')$.
+The loss of this updated attack prompt can then be approximated with a first-order Taylor expansion as:
+\begin{equation}
+    \mathcal{L}(\tilde{\textbf{p}}') \approx \textbf{p}_i' \;\ \nabla_{p_i} \mathcal{L}(\tilde{\textbf{p}})~\cite{},
+    \label{eq:loss_approx}
+\end{equation}
+where $\nabla_{p_i}$ denotes the gradient with respect to the $i$th embedding vector in $\tilde{\textbf{p}}$.
+Notably, the approximation does not contain $\mathcal{L}(\tilde{\textbf{p}}')$, which means that to evaluate the impact of a discrete update to the attack prompt, the updated prompt does not have to be fed through the model.
+Therefor the approximation allows for finding an optimal new embedding vector for each position $i$ in the attack prompt by searching through the set of discrete embedding vectors~\cite{}.\\
+
+Due to the presented approximation, it is not guaranteed that the update to the attack prompt that minimizes the approximated loss in~\cref{eq:loss_approx} also minimizes the true loss in~\cref{eq:optimization_loss}.
+\hui and \shi mitigate this effect in a similar way.
+They both find the $k$ best embedding vector updates for each position $i$ in the attack vector according to the approximated loss in~\cref{eq:loss_approx}~\cite{}.
+\hui then compute the true loss for each of the $k$ possible updates and find the optimal updated amongst the $k$ pre-computed options~\cite{}.
+\shi use a greedy search with random sampling on the $k$ candidate updates instead~\cite{}.
+
+\subsection{Shadow Models}
+While the loss-defined optimization approach presented in~\cref{sec:loss_minimization} allows for strategically choosing optimal updates to the attack prompts based on the attacked model's response, it does not conform to the threat model introduced in~\cref{sec:threat_model}.
+Since computing the gradient in~\cref{eq:loss_approx} requires access to the LLM's internal weights and calculations, it is not possible to perform this optimization when only black-box access to the attacked model is assumed.\\
+
+The naive solution to this is to change the threat model to assume white-box model access instead of black-box access.
+However, this is not a realistic threat model for applications that use proprietary and closed-source LLMs.
+Considering the fact that for many of the most capable and widely used LLMs, the internal weights are not available~\cite{}, this assumption would render gradient-based prompt injection attacks ineffective in many scenarios.
+Both \hui and \shi opt for threat models that preserve the black-box access for the attacked application by using shadow models~\cite{}.\\
+
+Shadow models are used in the attack prompt optimization as a stand-in for the attacked model in the target application.
+While the attacker only has black-box access to the LLM used in the attacked application, white-box access can be assumed for the shadow model~\cite{}.
+Several powerful LLMs are available under open-source licenses, which can be used as shadow models~\cite{}.
+Therefor this hybrid threat model of white-box access to the shadow model and black-box access to the target model can be considered to be as strong as the threat model described in~\cref{sec:threat_model}.
+During the attack prompt optimization, the shadow model is used together with a shadow dataset consisting of system and user prompts that are assumed to be similar to the ones encountered in an attack on the actual application~\cite{}.
+Whether actual data from the system can be collected by the attacker or whether assumptions have to be made to construct the shadow dataset depends on the additional attacker capabilities described in~\cref{sec:threat_model}.\\
+
+Whether prompt injection attacks using shadow models are effective against the targeted application mainly depends on the transferability of the attack from the shadow model to the LLM used in the application.
+Both \hui and \shi find that attacks trained on a shadow model that differs from the model used by the targeted application transfer with high effectiveness~\cite{}.
+While attack prompt effectiveness does decrease in some cases, especially when transferring an attack from a smaller shadow model to a larger target model, the attacks remain successful in most cases~\cite{}.
+Considering that an attacker might know which model is used by the targeted application, a suitable shadow model with proven high transferability and similar size can be chosen as the shadow model.
+\hui also prove that attacks can remain highly effective even when the shadow dataset used in the attack prompt optimization significantly differs from the dataset found in the target application~\cite{}.
+
+
+\subsection{Comparison to LLM-based Rephrasing}
+
+\subsection{Realistic Attack Scenarios}
