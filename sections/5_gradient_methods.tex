@@ -19,7 +19,7 @@ When the model is given the adversarial prompt $\tilde{\textbf{p}}$, which was b
 Meanwhile the actual response $\tilde{\textbf{r}}$, which might differ from the intended response $\tilde{\textbf{r}}$, can be equivalently expressed as $\tilde{\textbf{r}} = \textbf{r}_1, \textbf{r}_2, ... \textbf{r}_n$.
 The loss of the proposed attack prompt $\tilde{\textbf{p}}$ can then be expressed as:
 \begin{equation}
-    \mathcal{L}(\tilde{\textbf{p}}) = -log \prod_{i=1}^{n_r} \text{Pr}(r_i^*|\tilde{\textbf{p}}, \textbf{r}_1, \textbf{r}_2, ..., \textbf{r}_{i-1})~\cite{}
+    \mathcal{L}(\tilde{\textbf{p}}) = -log \prod_{i=1}^{n_r} \text{Pr}(\textbf{r}_i^*|\tilde{\textbf{p}}, \textbf{r}_1, \textbf{r}_2, ..., \textbf{r}_{i-1})~\cite{}
     \label{eq:optimization_loss}
 \end{equation}
 In other words, the loss is based on the probability that the model produces the attacker's desired output $\tilde{\textbf{r}^*}$ when injected with the malicious instructions $\tilde{\textbf{p}}$.
@@ -91,7 +91,44 @@ While attack prompt effectiveness does decrease in some cases, especially when t
 Considering that an attacker might know which model is used by the targeted application, a suitable shadow model with proven high transferability and similar size can be chosen as the shadow model.
 \hui also prove that attacks can remain highly effective even when the shadow dataset used in the attack prompt optimization significantly differs from the dataset found in the target application~\cite{}.
 
-
 \subsection{Comparison to LLM-based Rephrasing}
+The main advantage of the newer gradient-based approaches over the older approaches presented in~\cref{sec:manual_prompts} and~\cref{sec:automated_prompts} is their higher attack effectiveness on modern LLMs.
+\hui find that in a prompt leaking scenario, their approach can recover an exact system prompt in up to $68\%$ of the attacks on more modern LLMs, including \texttt{LLaMA-2-7B}~\cite{}.
+Compared to that, the attacks developed by \perez only recover the exact system prompt in $2\%$ of the attacks~\cite{}.
+Similarly, \shi achieve an average attack success rate of $97\%$ on the \texttt{Llama-3-8B-Instruct} model~\cite{}.
+Both \hui and \shi conclude that their newer gradient-based approaches are significantly more effective than previous prompt injection approaches on modern LLMs~\cite{}.\\
+
+The superior attack effectiveness of gradient-based methods can be attributed to their more direct optimization approach.
+Manual or automated rephrasing approaches like the ones by \perez and \deng adjust attack prompts on a word level and base the updates made to attack prompts on general prompting rules and guidelines.
+In contrast, gradient-based approaches like those by \hui and \shi adjust attack prompts on a token level and select attack prompt adjustments based directly on the attacked model's responses.
+It can therefore be concluded that gradient-based methods are conceptually better suited to create attack prompts optimized for prompt injection attacks.
+The better optimization does, however, come at the cost of the need for training data and a more complex attack prompt creation process.\\
+
+Another advantage of gradient-based methods over rephrasing methods is that they are less dependent on the initial attack prompts used as a starting point for the optimization process.
+\hui even find that an initialization with random embedding vectors is the best-performing initialization for their approach~\cite{}.
+Since the replacement of tokens in the attack prompt is chosen by searching through the token alphabet and not via in-context learning generation, gradient-based approaches are more likely to find optimized attack prompts that significantly differ from the initial prompts.
+On the other hand, gradient-based approaches are dependent on the good transferability of the attack prompts from the shadow model they were optimized on to the model in the attacked application.
+Since rephrasing-based approaches work without a shadow model, they tune the attack prompts directly on the attacked LLM.\\
+
+The adjustment of gradient-based attacks to different attack goals is done by changing the loss function used for the optimization.
+This not only allows for different attack goals but also enables additional specialization.
+For example, \shi use three loss terms balanced by hyper parameters~\cite{}.
+On less term aims at increasing the likelihood that the attack produces the desired response, similar to the loss defined in~\cref{eq:optimization_loss}.
+The other two terms are introduced to make the attack robust against variations that are encountered in the attack scenario considered by \shi and to lower the attack prompt's perplexity to evade attack detection.
+Introducing additional loss objectives and balancing the relative importance of loss terms allows for simple but effective specialization and adaption of gradient-based prompt injection attacks.
 
 \subsection{Realistic Attack Scenarios}
+Another novelty of the prompt injection attacks proposed by \hui and \shi in comparison to older attacks like the ones by \perez and \deng is that they consider more realistic attack scenarios.
+\hui do not only evaluate their attacks on offline applications but also test the effectiveness of their attack against real-world LLM applications on the Poe platform~\cite{}.
+For a prompt leaking attack against offline applications, they find an average success rate for recovering the exact system prompt is $82.3\%$.
+While the average exact match on real-world application is lower at $68.0\%$, it proves that their attack is suitable not only for attacks on experimental setups~\cite{}.
+\shi motivate their attack against LLM-as-a-judge applications with possible real-world targets like search result ranking, LLM tool selection frameworks, and reinforcement learning from AI feedback approaches~\cite{}.
+All of these ares are already using or will likely adopt LLM-as-a-judge-based evaluation and ranking and are therefore an attractive target for prompt injection attacks similar to the one proposed by \shi
+In case studies to evaluate the efficacy of their attack against real-world applications in all three areas, \shi find that their attack is effective in all of them~\cite{}.\\
+
+Besides the more realistic attack targets, both \hui and \shi also consider the possibility of defenses against prompt injection attacks in their proposed attacks.
+\hui use so called adversarial transformations to make their prompt leaking attack robust against output filters in the attacked applications.
+In such a defense, the application searches for exact or partial matches of the system prompt in the LLM's output~\cite{}.
+\hui add reversible transformation like prefixes to every sentence to their attack prompts to evade possible output filters and then reverse the transformations on the attacker end~\cite{}.
+\shi use an additional balanced loss term to make a low perplexity of the attack prompts one of the optimization targets.
+This approach can help to evade defenses based on the fact that optimized adversarial prompts often have higher perplexity than typical user prompts~\cite{}.
