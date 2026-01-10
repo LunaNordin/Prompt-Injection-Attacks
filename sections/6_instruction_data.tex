@@ -1,4 +1,4 @@
-\section{Challenges of Instruction-Data Integration}
+\section{Challenges of Instruction-Data Integration} \label{sec:instruction_data}
 While older prompt injection attacks become less effective on newer models, a consistent theme of prompt injection research is that the most recent attack approaches are highly effective even against state-of-the-art models.
 In this section, we discuss defense approaches against prompt injection attacks, based on the fundamental challenge presented by the close integration of data and instructions in LLM inputs.
 The separation of data and instructions is one of the fundamental principles of cybersecurity, which is typically applied by in-memory separation of non-executable memory for potentially unsafe data inputs~\cite{}.
@@ -16,9 +16,9 @@ All of these approaches have the advantage of being applicable after the LLM's t
 
 \begin{table}[htb]
     \centering
-    \caption{~\cite{}}
+    \caption{Harmfulness scores of Alpaca 7B and 13B model variants before and after fine-tuning. The rows correspond to the models before fine-tuning and after being fine-tuned on the SAP5, SAP10, or SAP30 dataset. The columns show the resulting harmfulness scores on the related SAP20 and the non-related Dual-Use and BAD+ datasets~\cite{}.}
     \label{tab:fine_tune_defense}
-    \begin{tabular}{@{}lcccc@{}}
+    \begin{tabular}{@{}llccc@{}}
         \toprule
          & & \multicolumn{3}{c}{\textbf{Dataset}} \\
         \cmidrule{3-5}

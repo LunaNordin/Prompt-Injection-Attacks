@@ -3,9 +3,9 @@ Since the introduction of GPT-3~\cite{}, the use of large language models (LLMs)
 While direct interaction with LLM-based chatbots remains the predominant use case for most individual users, LLMs are increasingly used as the backbone of a broader range of applications~\cite{}.
 Examples of LLM integrations include fully or partially automated data processing in applications~\cite{}, agentic models controlling systems independently~\cite{}, and the use of LLMs as reasoning foundations in robotics~\cite{}.\\
 
-A commonality of all LLM-based systems is that every instruction and all information that is not encoded in the LLM's weights is inputted in the form of prompts~\cite{}.
+A commonality of all LLM-based systems is that every instruction and all information that is not encoded in the LLM's weights is input in the form of prompts~\cite{}.
 The use of natural language prompts is what enables LLMs to be used in a wide range of different tasks and application domains.
-But the fact that instructions and data are jointly entered into the model opens up the possibility of manipulation by attackers in so called prompt injection attacks.
+But the fact that instructions and data are jointly entered into the model opens up the possibility of manipulation by attackers in so-called prompt injection attacks.
 By injecting malicious instructions into the data that is used in the LLM's prompt, attackers are able to control the LLM's output and manipulate LLM-integrated applications.
 Additionally, LLMs are used to make increasingly impactful decisions, while being less directly supervised by humans.
 This trend makes LLMs an increasingly attractive target for prompt injection attacks.
@@ -14,7 +14,7 @@ As a result, a diverse landscape of prompt injection approaches has evolved, whi
 In this paper, we demonstrate that the current robustness of modern LLMs against prompt injection attacks does not provide the necessary prerequisites to deeply integrate LLMs into critical or sensitive systems.
 We do so by systemizing the scientific development of prompt injection attacks against LLMs from late 2022 up to today.
 This systematization divides prompt injection attacks into two main classes.
-The first class consists of manual (cf.~\cref{sec:manual_prompts}) and automated (cf.~\cref{add_later}) attack prompt construction.
-The second class contains modern gradient-based techniques, which we discuss in~\cref{add_later}.
+The first class consists of manual (cf.~\cref{sec:manual_prompts}) and automated (cf.~\cref{sec:automated_prompts}) attack prompt construction.
+The second class contains modern gradient-based techniques, which we discuss in~\cref{sec:gradient_methods}.
 By following the development of prompt injection attacks, we highlight the persistent lack of robustness of state-of-the-art LLMs against the respective most advanced attacks.
-Finally, we discuss conceptual difficulties of making LLMs robust against prompt injection in~\cref{add_later}.
+Finally, we discuss conceptual difficulties of making LLMs robust against prompt injection in~\cref{sec:instruction_data}.

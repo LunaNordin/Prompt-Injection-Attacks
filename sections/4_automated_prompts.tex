@@ -13,8 +13,8 @@ To do so, they use the existing attack prompts as in-context learning examples a
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=\linewidth]{add_later.png}
-    \caption{}
+    \includegraphics[width=\linewidth]{images/semi_automated_framework.png}
+    \caption{Components and process step of the semi-automated prompt injection framework proposed by \deng~\cite{}.}
     \Description[<>]{<>}
     \label{fig:semi_automated_framework}
 \end{figure}
@@ -76,7 +76,7 @@ As mentioned in~\cref{sec:RLHF_instr_following}, \perez find that the \texttt{te
 The main difference between the two models is that \texttt{text-davinci-002} is fine-tuned using a supervised fine-tuning approach, while \texttt{text-davinci-001} is fine-tuned with RLHF~\cite{}.\\
 
 \deng make a similar observation in their comparison of \texttt{text-davinci-003} from the GPT-3.5 series with models from the Alpaca series.
-Based on the harmfulness scores from~\cref{tab:deng_model_comparison}, they conclude that the GPT-3.5 based models are more robust against prompt injection attacks than the Alpaca models, which are fine-tuned using a self-instruct framework~\cite{}.
+Based on the harmfulness scores from~\cref{tab:deng_model_comparison}, they conclude that the GPT-3.5-based models are more robust against prompt injection attacks than the Alpaca models, which are fine-tuned using a self-instruct framework~\cite{}.
 This conclusion aligns with the findings by \perez and suggests that fine-tuning with RLHF leads to increased model robustness compared to supervised fine-tuning.\\
 
 It is important to mention several aspects about this qualitative conclusion.

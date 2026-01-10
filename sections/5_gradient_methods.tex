@@ -1,4 +1,4 @@
-\section{Gradient-Based Prompt Optimization}
+\section{Gradient-Based Prompt Optimization} \label{sec:gradient_methods}
 As mentioned in~\cref{sec:manual_prompts}, \perez achieved high attack success rates when carrying out their manual prompt injection attack against early GPT-3 LLMs in late 2022.
 However, the effectiveness of early approaches, like the one proposed by \perez, decreases over time.
 This becomes evident, for example, when \hui re-evaluate the attack approach of \perez on more modern LLMs in late 2024.
@@ -7,7 +7,7 @@ They find that the attack prompts of \perez are unable to recover any part of a 
 The ineffectiveness of older prompt injection attacks on modern models is likely due to adjusted fine-tuning.
 Attack prompts from existing prompt injection attacks can be taken into account during the fine-tuning of new LLMs, which reduces the effectiveness of the attacks.
 \deng prove that this works by fine-tuning models on their own attack prompts, which significantly reduces the effectiveness of the attacks~\cite{}.
-Nevertheless, using existing prompt injection attacks to fine-tune new models does not make models fundamentally robust against attacks, which we further discuss in~\cref{add_later}.
+Nevertheless, using existing prompt injection attacks to fine-tune new models does not make models fundamentally robust against attacks, which we further discuss in~\cref{sec:current_defenses}.
 However, it does drive the innovation of new and adapted attack approaches, such as gradient-based attack prompt optimization.
 In the following, we give an overview of these more recent approaches by the example of attack frameworks proposed by \hui and \shi and compare them to the attack approaches discussed in~\cref{sec:manual_prompts} and~\cref{sec:automated_prompts}.
 
@@ -40,8 +40,8 @@ The full iterative algorithm is conceptually depicted in~\cref{fig:optimization_
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=\linewidth]{add_later.png}
-    \caption{~\cite{}}
+    \includegraphics[width=\linewidth]{images/prompt_optimization.png}
+    \caption{Iterative optimization of tokens in attack prompts based on a loss function~\cite{}}
     \Description[<>]{<>}
     \label{fig:optimization_alg}
 \end{figure}
@@ -53,7 +53,7 @@ Therefore, updates to an attack prompt can only be made discretely by exchanging
 This means that no continuous updates can be made to the attack prompt.\\
 
 Both \hui and \shi solve this problem by estimating the impact of changing individual embedding vectors in the attack prompt~\cite{}.
-If an updated attack prompt $\tilde{\textbf{p}}' = \textbf{p}_1, ..., \textbf{p}_{i-1}, \textbf{p}_i', \textbf{p}_{i+1}, ..., \textbf{p}_{n_p}$ is created by exchanging the embedding vector $\textbf{p}_i$ in $\tilde{\textbf{p}}$ with $\textbf{p}_i'$, the loss of the updated prompt can be expressed with~\cref{eq:optimization_loss} as $\mathcal{L}(\tilde{\textbf{p}}')$.
+If an updated attack prompt $\tilde{\textbf{p}}' = \textbf{p}_1, ..., \textbf{p}_i', ..., \textbf{p}_{n_p}$ is created by exchanging the embedding vector $\textbf{p}_i$ in $\tilde{\textbf{p}}$ with $\textbf{p}_i'$, the loss of the updated prompt can be expressed with~\cref{eq:optimization_loss} as $\mathcal{L}(\tilde{\textbf{p}}')$.
 The loss of this updated attack prompt can then be approximated with a first-order Taylor expansion as:
 \begin{equation}
     \mathcal{L}(\tilde{\textbf{p}}') \approx \textbf{p}_i' \;\ \nabla_{p_i} \mathcal{L}(\tilde{\textbf{p}})~\cite{},
