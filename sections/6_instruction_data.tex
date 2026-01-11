@@ -1,8 +1,8 @@
 \section{Challenges of Instruction-Data Integration} \label{sec:instruction_data}
 While older prompt injection attacks become less effective on newer models, a consistent theme of prompt injection research is that the most recent attack approaches are highly effective even against state-of-the-art models.
 In this section, we discuss defense approaches against prompt injection attacks, based on the fundamental challenge presented by the close integration of data and instructions in LLM inputs.
-The separation of data and instructions is one of the fundamental principles of cybersecurity, which is typically applied by in-memory separation of non-executable memory for potentially unsafe data inputs~\cite{}.
-For LLMs, a fundamental separation of data and instruction is not possible because they are designed architecturally to handle all inputs, including instructions, identically~\cite{}.\\
+The separation of data and instructions is one of the fundamental principles of cybersecurity, which is typically applied by in-memory separation of non-executable memory for potentially unsafe data inputs~\cite{owasp_a05_nodate}.
+For LLMs, a fundamental separation of data and instruction is not possible because they are designed architecturally to handle all inputs, including instructions, identically~\cite{kamath_prompt-based_2024}.\\
 
 The inseparability of data and instructions forms the basis of all prompt injection attacks and poses a significant challenge for designing effective defense strategies.
 Since jailbreaking attacks against LLMs are based on the same fundamental principle of instruction-data integration, we are also considering defense approaches against these attacks in this chapter without further separation between the two attack classes.
@@ -11,12 +11,12 @@ Starting with the currently widely adopted approaches, each class has higher pot
 
 \subsection{Current Defense Approaches} \label{sec:current_defenses}
 The majority of defense approaches in use today are based on the analysis of existing prompt injection strategies.
-Some of the most prominent examples are the sanitation of inputs based on known attack patterns~\cite{}, filters looking for injected behavior like leaked system prompts or harmful speech in model outputs~\cite{}, the supervision of LLM outputs by secondary language models~\cite{}, and the sandboxing of systems to limit the effects of successful attacks~\cite{}.
+Some of the most prominent examples are the sanitation of inputs based on known attack patterns~\cite{owasp_prompt_nodate}, filters looking for injected behavior like leaked system prompts or harmful speech in model outputs~\cite{hui_pleak_2024, ji_controlling_2023}, monitoring LLM behavior and function usage~\cite{owasp_prompt_nodate}, and the sandboxing of systems to limit the effects of successful attacks~\cite{debenedetti_defeating_2025}.
 All of these approaches have the advantage of being applicable after the LLM's training phase and can be adapted to new defense strategies without having to adjust model parameters.\\
 
 \begin{table}[htb]
     \centering
-    \caption{Harmfulness scores of Alpaca 7B and 13B model variants before and after fine-tuning. The rows correspond to the models before fine-tuning and after being fine-tuned on the SAP5, SAP10, or SAP30 dataset. The columns show the resulting harmfulness scores on the related SAP20 and the non-related Dual-Use and BAD+ datasets~\cite{}.}
+    \caption{Harmfulness scores of Alpaca 7B and 13B model variants before and after fine-tuning. The rows correspond to the models before fine-tuning and after being fine-tuned on the SAP5, SAP10, or SAP30 dataset. The columns show the resulting harmfulness scores on the related SAP20 and the non-related Dual-Use and BAD+ datasets~\cite{deng_attack_2023}.}
     \label{tab:fine_tune_defense}
     \begin{tabular}{@{}llccc@{}}
         \toprule
@@ -37,30 +37,30 @@ All of these approaches have the advantage of being applicable after the LLM's t
     \end{tabular}
 \end{table}
 
-Another approach is to harden an LLM against prompt injection during fine-tuning~\cite{}.
+Another approach is to harden an LLM against prompt injection during fine-tuning~\cite{deng_attack_2023, chen_defending_nodate}.
 While it is a higher computational effort due to the need to adjust model parameters, fine-tuning has the advantage of being an integrated defense mechanism without additional processing steps.
 Additionally, it has the potential to generalize to new attacks to some extent without the need of adapting the defense implementation.
 \deng prove both the effectiveness and generalizability of this approach by hardening two sizes of an Alpaca model.
-They do so by fine-tuning the models to produce refusal responses to three of their own SAP attack prompt datasets, which we presented in~\cref{sec:automation_impact}~\cite{}.
+They do so by fine-tuning the models to produce refusal responses to three of their own SAP attack prompt datasets, which we presented in~\cref{sec:automation_impact}~\cite{deng_attack_2023}.
 The harmfulness scores measured in this experiment are shown in~\cref{tab:fine_tune_defense}.
 \deng find that the output harmfulness of both model sizes attacked with the SAP20 dataset is significantly reduced when fine-tuned on other SAP datasets.
-While the harmfulness scores are also reduced when attacked with datasets that are not from the SAP family, the effect is significantly lower~\cite{}.
+While the harmfulness scores are also reduced when attacked with datasets that are not from the SAP family, the effect is significantly lower~\cite{deng_attack_2023}.
 This shows that the generalizability of fine-tuning defenses based on existing attacks is limited.\\
 
-Defense approaches like the ones mentioned above are widely adopted in modern LLM-based applications and form the basis of the defense strategies stated by companies like OpenAI~\cite{} and NVIDIA~\cite{}.
+Defense approaches like the ones mentioned above are widely adopted in modern LLM-based applications and form the basis of the defense strategies stated by companies like OpenAI~\cite{openai_understanding_nodate} and NVIDIA~\cite{atefehasayesh_securing_2023}.
 The problem shared amongst all these defense strategies is that they are based on existing prompt injection attacks.
 Therefore, novel attack strategies that are sufficiently distinct from existing ones can effectively attack models despite the implemented defenses.
 Since, in most realistic threat models, any employed defense mechanisms are assumed to be known by the attacker, new attacks can be designed specifically to circumvent existing defenses.
-Examples of this are the specialized loss terms for gradient-based methods as used by \shi in~\cref{sec:realistic_scenarios}~\cite{} or manual approaches like the recent example of adversarial poetry~\cite{}.
+Examples of this are the specialized loss terms for gradient-based methods as used by \shi in~\cref{sec:realistic_scenarios}~\cite{shi_optimization-based_2024} or manual approaches like the recent example of adversarial poetry~\cite{bisconti_adversarial_2025}.
 While this makes this class of defense strategies useful as short-term fixes for prompt injection attacks, they will remain band-aid solutions due to their reactive nature.
 
 \subsection{Separating Instructions and Data}
 While the fundamental architecture of LLMs does not allow for fully separating instructions and data, there are several approaches that try to approximate this paradigm.
 One approach is to separate the computation that an LLM performs on input and data.
-This can be achieved, for example, by architectural design patterns specifically adopted for LLM-integrated applications~\cite{} or through a direct separation of data flows for trusted instructions and untrusted data inputs~\cite{}.
+This can be achieved, for example, by architectural design patterns specifically adopted for LLM-integrated applications~\cite{beurer-kellner_design_2025} or through a direct separation of data flows for trusted instructions and untrusted data inputs~\cite{debenedetti_defeating_2025}.
 Another approach is to make instructions and data more distinguishable for LLMs.
-The high effectiveness of prompt injection attacks can be at least partially attributed to the inability of LLMs to distinguish between trustworthy instructions and untrustworthy data inputs~\cite{}.
-Making the embeddings of the two input types more distinguishable for the model can help to increase robustness~\cite{}.\\
+The high effectiveness of prompt injection attacks can be at least partially attributed to the inability of LLMs to distinguish between trustworthy instructions and untrustworthy data inputs~\cite{zverev_can_2024}.
+Making the embeddings of the two input types more distinguishable for the model can help to increase robustness~\cite{zverev_aside_2025}.\\
 
 The fact that these approaches are based less directly on existing prompt injection attacks makes them more robust against novel attack strategies.
 While they are, in theory, applicable at scale, implementing them takes more careful consideration of model defense during the design and training phases of LLM-based applications.
@@ -70,16 +70,16 @@ Therefore, these approaches can be used as a step-up in model robustness, as the
 \subsection{Defending with Interpretability}
 The most promising class of defense approaches is techniques based on mechanistic interpretability.
 Mechanistic interpretability aims to achieve deep causal insight into the input processing through reverse-engineering techniques.
-In contrast to other approaches that treat LLMs as black boxes, mechanistic interpretability techniques use information on the structure and internal processing of models for a granular understanding of model behavior~\cite{}.
-Compared to black-box methods, interpretability methods are concerned with answering the question of '\emph{How} does the model work internally?' rather than '\emph{Why} was this output produced for this input?'~\cite{}.
-Two main classes of mechanistic interpretability techniques are attributing functions to internal model components~\cite{} and finding vector-represented concepts within the model's internal activations~\cite{}.\\
+In contrast to other approaches that treat LLMs as black boxes, mechanistic interpretability techniques use information on the structure and internal processing of models for a granular understanding of model behavior~\cite{saphra_mechanistic_2024, rai_practical_2024}.
+Compared to black-box methods, interpretability methods are concerned with answering the question of '\emph{How} does the model work internally?' rather than '\emph{Why} was this output produced for this input?'~\cite{russell_artificial_2021}.
+Two main classes of mechanistic interpretability techniques are attributing functions to internal model components and finding vector-represented concepts within the model's internal activations~\cite{rai_practical_2024}.\\
 
-Currently, there are several attempts to understand attack causality~\cite{}, proposals for defenses~\cite{}, as well as attack techniques based on the interpretability of attacks on LLMs~\cite{}.
+Currently, there are several attempts to understand attack causality~\cite{kirch_what_2025, lin_towards_2024, garcia-carrasco_detecting_2024}, proposals for defenses~\cite{bereska_mechanistic_2024}, as well as attack techniques based on the interpretability of attacks on LLMs~\cite{winninger_using_2025}.
 Using mechanistic interpretability techniques to analyze adversarial attacks on LLMs has the potential of providing a deeper and more causal understanding of why attacks are successful.
 This knowledge can then be used to implement defenses based on the fundamental nature of prompt injection attacks.
 Therefore, defenses based on interpretability have the potential to be much more generalizable than existing defenses and could lead to highly improved model robustness.\\
 
 On the other hand, there are several issues with interpretability-based techniques.
-The scientific field of mechanistic LLM interpretability, while quickly evolving, is overall in early development~\cite{}.
-One of the main problems is that most mechanistic interpretability approaches are limited to toy examples, small models, and a very limited scope~\cite{}.
+The scientific field of mechanistic LLM interpretability, while quickly evolving, is overall in early development~\cite{saphra_mechanistic_2024, rai_practical_2024}.
+One of the main problems is that most mechanistic interpretability approaches are limited to toy examples, small models, and a very limited scope~\cite{rai_practical_2024}.
 This means that scaling interpretability-based defenses to apply to state-of-the-art LLMs presents a significant challenge but represents one of the best approaches to limiting prompt injection attack success in the future.
