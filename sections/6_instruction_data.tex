@@ -2,7 +2,7 @@
 While older prompt injection attacks become less effective on newer models, a consistent theme of prompt injection research is that the most recent attack approaches are highly effective even against state-of-the-art models.
 In this section, we discuss defense approaches against prompt injection attacks, based on the fundamental challenge presented by the close integration of data and instructions in LLM inputs.
 The separation of data and instructions is one of the fundamental principles of cybersecurity, which is typically applied by in-memory separation of non-executable memory for potentially unsafe data inputs~\cite{owasp_a05_nodate}.
-For LLMs, a fundamental separation of data and instruction is not possible because they are designed architecturally to handle all inputs, including instructions, identically~\cite{kamath_prompt-based_2024}.\\
+For LLMs, a fundamental separation of data and instructions is not possible because they are designed architecturally to handle all inputs, including instructions, identically~\cite{kamath_prompt-based_2024}.\\
 
 The inseparability of data and instructions forms the basis of all prompt injection attacks and poses a significant challenge for designing effective defense strategies.
 Since jailbreaking attacks against LLMs are based on the same fundamental principle of instruction-data integration, we are also considering defense approaches against these attacks in this chapter without further separation between the two attack classes.
@@ -56,7 +56,7 @@ While this makes this class of defense strategies useful as short-term fixes for
 
 \subsection{Separating Instructions and Data}
 While the fundamental architecture of LLMs does not allow for fully separating instructions and data, there are several approaches that try to approximate this paradigm.
-One approach is to separate the computation that an LLM performs on input and data.
+One approach is to separate the computation that an LLM performs on instructions and data.
 This can be achieved, for example, by architectural design patterns specifically adopted for LLM-integrated applications~\cite{beurer-kellner_design_2025} or through a direct separation of data flows for trusted instructions and untrusted data inputs~\cite{debenedetti_defeating_2025}.
 Another approach is to make instructions and data more distinguishable for LLMs.
 The high effectiveness of prompt injection attacks can be at least partially attributed to the inability of LLMs to distinguish between trustworthy instructions and untrustworthy data inputs~\cite{zverev_can_2024}.
@@ -69,8 +69,8 @@ Therefore, these approaches can be used as a step-up in model robustness, as the
 
 \subsection{Defending with Interpretability}
 The most promising class of defense approaches is techniques based on mechanistic interpretability.
-Mechanistic interpretability aims to achieve deep causal insight into the input processing through reverse-engineering techniques.
-In contrast to other approaches that treat LLMs as black boxes, mechanistic interpretability techniques use information on the structure and internal processing of models for a granular understanding of model behavior~\cite{saphra_mechanistic_2024, rai_practical_2024}.
+Mechanistic interpretability aims to achieve deep causal insight into the input processing of LLMs through reverse-engineering techniques.
+In contrast to other approaches that treat LLMs as black-boxes, mechanistic interpretability techniques use information on the structure and internal processing of models for a granular understanding of model behavior~\cite{saphra_mechanistic_2024, rai_practical_2024}.
 Compared to black-box methods, interpretability methods are concerned with answering the question of '\emph{How} does the model work internally?' rather than '\emph{Why} was this output produced for this input?'~\cite{russell_artificial_2021}.
 Two main classes of mechanistic interpretability techniques are attributing functions to internal model components and finding vector-represented concepts within the model's internal activations~\cite{rai_practical_2024}.\\
 

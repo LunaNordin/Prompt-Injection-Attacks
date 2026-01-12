@@ -2,7 +2,7 @@
 The manual construction of attack prompts for prompt injection attacks, as shown in~\cref{sec:manual_prompts}, is able to achieve high attack success rates, mainly by applying general prompting practices to adversarial settings.
 While this approach is well-suited for early experimentation and simple red-teaming tasks, it is also time-consuming and difficult to apply at scale.
 Automating parts of manual prompt construction workflows like the one proposed by \perez alleviates these problems to a certain extent.
-In the following, we are presenting and discussing the partial automation of prompt injection attacks using the example of a semi-automated framework proposed by \deng~\cite{deng_attack_2023}.
+In the following, we present and discuss the partial automation of prompt injection attacks on the example of a semi-automated framework proposed by \deng~\cite{deng_attack_2023}.
 
 \subsection{Semi-Automated Attack Framework}
 In their attack framework, \deng automate two steps that were carried out manually in the approach of Perez and Ribeiro.
@@ -14,14 +14,14 @@ To do so, they use the existing attack prompts as in-context learning examples a
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\linewidth]{images/semi_automated_framework.png}
-    \caption{Components and process step of the semi-automated prompt injection framework proposed by \deng~\cite{deng_attack_2023}.}
+    \caption{Components and process steps of the semi-automated prompt injection framework proposed by \deng~\cite{deng_attack_2023}.}
     \Description[<>]{<>}
     \label{fig:semi_automated_framework}
 \end{figure}
 
 The second step that \deng automate is the evaluation of proposed attack prompts.
-While \perez use comparisons of actual and expected model responses to measure the effectiveness of injected prompts, \deng leverage the text understanding capabilities of LLMs~\cite{perez_ignore_2022, deng_attack_2023}.
-They use an LLM-as-a-judge approach by tasking a so-called evaluation LLM with estimating the harmfulness of the attacked target LLM's response.
+While \perez use string comparisons of actual and expected model responses to measure the effectiveness of injected prompts, \deng leverage the text understanding capabilities of LLMs~\cite{perez_ignore_2022, deng_attack_2023}.
+They use an LLM-as-a-judge approach by tasking a so-called evaluation LLM with estimating the harmfulness of the attacked LLM's response.
 The evaluation LLM is tasked with assigning a harmfulness score on a scale of 1 to 10 to each of the target LLM's responses~\cite{deng_attack_2023}.
 The most effective new attack prompts are then added to the attack prompt dataset, and the process can be repeated.\\
 
@@ -33,7 +33,7 @@ The most important tunable parameters of this semi-automated approach are the in
 The most important advantage of the semi-automated attack framework proposed by \deng is that it eliminates most of the manual steps required by previous approaches and is therefore easily scalable.
 This becomes evident by the fact that \deng are able to produce novel semi-automatic attack prompt (SAP) datasets with hundreds of unique prompts~\cite{deng_attack_2023}.
 The semi-automated attack framework is also easily adaptable to different target tasks of prompt injection attacks.
-While \deng use the target task of outputting harmful content in various topics to create the SAP datasets, the target task can be changed by adapting the system prompts of the attack and evaluation LLM accordingly~\cite{deng_attack_2023}.
+While \deng use the target task of outputting harmful content in various topics to create the SAP datasets, the target task can be changed by adapting the system prompts of the attack and evaluation LLM, as well as the initial attack prompt dataset~\cite{deng_attack_2023}.
 \\
 
 Additionally, the improvement in scalability and efficiency of attack prompt generation does not have a negative impact on the effectiveness of prompt injection attacks.
@@ -63,7 +63,7 @@ Since the compared datasets were created without taking this specific harmfulnes
 \end{table}
 
 An important limitation of the automation framework proposed by \deng is that it requires an initial attack prompt set as a baseline to start the LLM-based rephrasing process.
-If no suitable baseline dataset is available for a specific attacker goal task, a manual dataset has to be constructed~\cite{deng_attack_2023}.
+If no suitable baseline dataset is available for a specific attack goal, a manual dataset has to be constructed~\cite{deng_attack_2023}.
 This adds time-intensive and expensive human labor to the framework, preventing the semi-automated approach from being fully automated.
 In addition to the increasing effort, the baseline attack prompt dataset might also have an impact on the framework's performance.
 The effectiveness of the new attack prompts, which are created by the framework through LLM-based rephrasing, is determined by the type of model, the model's system prompt, and the provided in-context learning examples.
@@ -85,6 +85,6 @@ First of all, the observation by \deng that GPT-3.5 series models are more robus
 While the parameter numbers of the Alpaca models used by \deng are known, the parameter numbers of the GPT-3.5 series remain undisclosed.
 At least the \texttt{text-davinci-003} model is likely to have a much higher parameter number compared to the Alpaca models, which could impact robustness.
 Second, there is no data available to directly compare the findings by \perez and \deng
-The comparison is only based on the findings that in both works, RLHF fine-tuned models are less susceptible to prompt injection attacks than comparable models using supervised fine-tuning.
-Lastly, the comparison of RLHF and supervised fine-tuning relies on the empirical comparison of existing models.
-The fact that models fine-tuned with RLHF are more robust does not mean that RLHF is in principle less susceptible to prompt injection attacks or that supervised fine-tuning is unable to produce sufficiently robust LLMs.
+The comparison is only based on the findings that in both works, RLHF fine-tuned models are less susceptible to prompt injection attacks than comparable models using alternative fine-tuning methods.
+Lastly, the comparison of RLHF and other supervised fine-tuning methods relies on the empirical comparison of existing models.
+The fact that models fine-tuned with RLHF are more robust does not mean that RLHF is, in principle, less susceptible to prompt injection attacks or that other fine-tuning methods are unable to produce sufficiently robust LLMs.

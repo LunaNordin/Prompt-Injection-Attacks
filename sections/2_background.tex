@@ -16,14 +16,14 @@ We will go into more details on specific prompt injection approaches in the foll
 The basic functionality of any LLM-integrated application is to utilize an LLM $f$ to process external data on behalf of the user.
 To do so, the LLM is provided with a prompt $\textbf{p}$ consisting of textual task instructions $\textbf{s}^t$ and external data $\textbf{x}^t$~\cite{liu_formalizing_2024}.
 This data is often, but not exclusively, text-based and can incorporate a wide range of information types like web pages, source code, and different document types.
-While the simplest way to combine instructions and data is through simple concatenation in the form of prefix prompts, there are other possible approaches.
+While the simplest way to combine instructions and data is through basic concatenation in the form of prefix prompts, there are other possible approaches.
 In general, the data can be joined with the instructions through slot-filling with an arbitrary number and distribution of slots within the instructions.
 We denote the arbitrary combination of instruction and data into a prompt with the notation shown in~\cref{eq:prompt_constr}.
 \begin{equation}
     \textbf{p} = \textbf{s}^t \circ \textbf{x}^t
     \label{eq:prompt_constr}
 \end{equation}
-We use the arbitrary combination operator $\circ$ in rather than the more specific string concatenation operator $\oplus$ used by \liu to ensure the notation applies to all presented prompt injection approaches~\cite{liu_formalizing_2024}.
+We use the arbitrary combination operator $\circ$ rather than the more specific string concatenation operator $\oplus$ used by \liu to ensure the notation applies to all presented prompt injection approaches~\cite{liu_formalizing_2024}.
 The task instructions $\textbf{s}^t$ themselves can consist of parts originating from the user and the application.
 Instructions from the application $\textbf{s}^a$, often referred to as the system prompt, usually define guard rails or steer the model towards a specific task that is intended by the application.
 User instructions $\textbf{s}^u$ might contain a more specific task description, directly provided information, or in-context learning examples.
@@ -37,7 +37,7 @@ The fundamental construction of prompts that we introduce in this section is use
 
 \subsection{Threat Model} \label{sec:threat_model}
 Since prompt injection attacks are a cybersecurity threat in the context of LLMs, their formal definition needs to be associated with a threat model.
-In the following, we introduce a general attacker goal and attacker capability that apply to all prompt injection attacks as defined in~\cref{sec:prompt_inj_def}.
+In the following, we introduce a general attacker goal and attacker capabilities that apply to all prompt injection attacks as defined in~\cref{sec:prompt_inj_def}.
 We point out any additions or deviations from this general threat model in the sections on the individual approaches.\\
 
 \textbf{Attacker Goal~\cite{liu_formalizing_2024}:}
@@ -45,9 +45,9 @@ In any prompt injection attack, the attacker's main goal is to manipulate the LL
 In general, the chosen response is arbitrary.
 However, in many cases, additional constraints apply to the response $\tilde{\textbf{r}}$ according to the attack's intention.
 For example, the attacker might choose the response $\tilde{\textbf{r}}$ to be from the same domain or distribution as $\textbf{r}$.
-The attacker goal is one of the main distinguishing factors between different prompt injection approaches.
-Concrete attacker goals are as diverse as the applications and tasks of the attacked LLMs.
-Therefor the definition of the overall attacker goal in an arbitrary prompt injection attack needs to be kept general.\\
+The concrete attacker goal is one of the main distinguishing factors between different prompt injection approaches.
+Attacker goals are as diverse as the applications and tasks of the attacked LLMs.
+Therefore, the definition of the overall attacker goal in an arbitrary prompt injection attack needs to be kept general.\\
 
 \textbf{Attacker Capabilities~\cite{liu_formalizing_2024}:}
 The attacker's most important capability is the manipulation of the external data $\textbf{x}^t$ used in the prompt construction.
@@ -56,8 +56,8 @@ This explicitly excludes the ability of altering the data that is submitted to t
 Though it does not principally limit the injected data in length or type.\\
 
 Many prompt injection attacks also assume that the attacker can acquire knowledge about the attacked application.
-Examples for such knowledge include the exact model of the attacked LLM, the system prompt $\textbf{s}^a$, or details on the data processing pipeline, like pre-processing or filters applied to either input or output.
-However, such additional attacker knowledge cannot be assumed by every prompt injection attack.
+Examples of such knowledge include the exact model of the attacked LLM, the system prompt $\textbf{s}^a$, or details on the data processing pipeline, like pre-processing or filters applied to input and output.
+However, such additional attacker knowledge cannot be assumed for every prompt injection attack.
 For example, prompt leaking attacks that aim at manipulating the model into outputting the system prompt typically do not assume that the attacker has any prior knowledge about the system prompt.
 
 \subsection{Prompt Injection Attacks} \label{sec:prompt_inj_def}
@@ -80,15 +80,16 @@ In the case of an attack, the compromised external data $\tilde{\textbf{x}}$ is 
 \end{equation}
 which leads to a changed model response $\tilde{\textbf{r}} = f(\tilde{\textbf{p}})$. Considering the compromised data $\tilde{\textbf{x}}$ contains the injected data $\textbf{x}^e$ and more importantly, the injected instructions $\textbf{s}^e$, shows how the attacker takes influence on the LLM.
 This demonstrates that prompt injection attacks are fundamentally based on the mixing of instructions and data in the construction of prompts.
-We further discuss this fundamental problem in~\cref{sec:instruction_data}\\
+We further discuss this fundamental problem in~\cref{sec:instruction_data}.\\
 
 The general definition of prompt injection attacks by \liu only describes the fundamental characteristic shared amongst all prompt injection variants.
-Two main parameters create the variety of prompt injection attacks found in the literature.
-One parameter is the injected task defined by the attacker, the spectrum of which can be as broad as the target tasks of various applications.
+Three main parameters create the variety of prompt injection attacks found in the literature.
+The first parameter is the injected task defined by the attacker, the spectrum of which can be as broad as the target tasks of various applications.
 A prominent example is the leaking of the system prompt by the LLM~\cite{editor_llm072025_nodate, hui_pleak_2024}.
-The other parameter is the definition of the attack function $\mathpzc{A}$.
+The second parameter is the definition of the attack function $\mathpzc{A}$.
 Just like with the construction of prompts shown in~\cref{eq:prompt_constr}, the naive approach is to concatenate the instruction data with the components injected by the attacker.
 However, much more complex approaches can be used, which can be adjusted to the attacked application's LLM, target task, and the injected task~\cite{liu_formalizing_2024}.
+The third parameter is the technique used to define and optimize the injected data and instructions to make the attack as effective as possible.
 By presenting and discussing several case studies in the following chapters, we provide an overview of the variety of prompt injection techniques with different injected tasks and attack approaches.
 
 \subsection{Prompt Injection Approaches}
@@ -100,4 +101,4 @@ We present a manual approach following this notion in~\cref{sec:manual_prompts} 
 The second group of prompt injection approaches is based on \textbf{token-level attack prompt optimization}.
 These approaches do not rephrase the injected instructions but algorithmically identify and evaluate the change of individual tokens in the injected data.
 Because such approaches can define the prompt injection attack as an optimization problem with a related loss function, they are able to use gradient-based optimization techniques to find optimal attack prompts.
-We present two prompt injection attacks from this group with different optimization techniques in~\cref{sec:gradient_methods}.
+We present two prompt injection attacks with different optimization techniques in~\cref{sec:gradient_methods}.
