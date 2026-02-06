@@ -19,7 +19,7 @@
 		- Touch on proposed defenses and conceptual defense difficulties
 - Background
 	- Use the formal definitions of Liu et al. here
-	- Prompt engineering
+	- LLM prompting
 		- Instructions, prompts, external data
 		- Prompt engineering
 	- Threat model
@@ -44,6 +44,7 @@
 	- Prompt injection attacks
 		- Subgoals (e.g. prompt leaking)
 	- Prompt injection methods
+		- ==Table comparing "effort", effectiveness, and prerequisites of different approaches?==
 		- Manual prompt construction and automation
 		- Gradient-based prompt optimization
 - Manual Prompt Construction
@@ -68,15 +69,18 @@
 	- Deng et al. use LLMs for prompt optimization
 	- Mainly saves time on costly human iterations
 		- LLMs can generate many combinations of similar prompts to be evaluated in a short time
+		- Easy to adjust and adapt process e.g. to new attacker goals by changing prompts of attack and evaluation LLM
+	- Semi-automatic approach outperforms manually crafted prompts
 	- Need for manual baseline prompts
 		- Quality and diversity of initial prompts likely influences final success rate
 		- LLMs for optimization unlikely to find completely novel attack strategies
-	- Only discrete optimization
-		- No possibility to adjust prompts in embedding space
-	- Semi-automatic approach outperforms manually crafted prompts
+	- ~~Only discrete optimization~~
+		- ~~No possibility to adjust prompts in embedding space~~
 	- Comparison to RLHF in Perez et al.
-		- RLHF is shown to make models more robust but only slightly
-		- This is no GPT-3.5 but still the focus of RLHF seems to be instruction following and not attack robustness
+		- RLHF is concluded to make models more robust but only slightly
+		- Perez found that bigger models and better fine-tuning lead to better instruction following and lower robustness
+		- Deng use DaVinci-003 (RLHF) instead of DaVinci-002 (supervised fine-tuning) 
+		- So RLHF seems to be better than supervised fine-tuning
 - Formalization
 	- ==Potentially remove this chapter since Liu et al. is already sufficiently covered in other chapters==
 	- Formal definitions already introduced in Background chapter -> highlight formalization/standardization and focus on extensive attack/model/defense comparison
@@ -88,37 +92,77 @@
 		- Still no effective defense
 - Gradient-Based Prompt Optimization
 	- Motivation: older prompt construction methods do not work on newer models
+		- Probably due to fine-tuning on old attacks
 		- Therefor something better is needed
-	- Gradient-based approaches need access to model weights
-		- Both Shi et al. and Hui et al. use similar workarounds
-		- Construction of shadow datasets
-		- Optimization on similar "clone" of actual application
-		- Optimized attacks generalize well to new applications even with different models
-	- Both papers use more realistic scenarios
-		- Shi et al. argue with use of LLM-as-a-judge in search, tool selection and RLAIF
-		- Hui et al. attack publicly available applications
-	- Gradient descent methods not so dependent on initial prompt
-		- More optimized and potentially novel attack approaches compared to LLM-based reformulation done by Deng et al.
-		- More training data needed but better optimization
-	- Both use active evasion of defenses
-		- Shi et al. use perplexity loss term
-		- Hui et al. use adversarial transformations
-	- Shi et al. use gradient descent with specialized loss
-		- Multiple loss terms to balance several objectives
-			- Objectives can be based on certain application details (e.g. in this case robustness against change in order of judge's candidates)
-		- Replacing individual discrete tokens so no continuous optimization in embedding space
-		- Attack prompt has fixed length
-		- Manual attacks are not very effective
-			- In comparison to Perez et al. effectiveness likely decreased with newer models
-			- However no direct comparison to Perez et al. only similar approach
-	- Hui et al. use incremental optimization
-		- Incremental optimization
-			- Optimizing for increasingly long targets to efficiently cover large search space
-		- Adversarial transformations
-			- To evade multiple different types of possible defenses
-		- Also replace embedding vectors of discrete tokens
-			- So they compare performance in embedding space, but the method is still token discrete and not continuous
-		- Direct comparison with Perez et al.
-			- Shows that old manual attacks are ineffective for newer models
+		- Especially direct comparison to Perez by Hui et al.
+	- Loss minimization approach
+		- Cycle of attack -> loss -> prompt adaption
+		- Both Hui et al. and Shi et al. approximate the loss
+		-  ~~Hui et al. use incremental optimization~~
+			- ~~Optimizing for increasingly long targets to efficiently cover large search space~~
+		- Gradient-based approaches need access to model weights
+			- Both Shi et al. and Hui et al. use similar workarounds
+			- Construction of shadow datasets
+			- Optimization on similar "clone" of actual application
+			- Optimized attacks generalize well to new applications even with different models
+	- Comparison to LLM-based rephrasing
+		- Higher attack effectiveness
+			- More training data needed but better optimization
+			- Token-level instead of word-level
+		- Gradient descent methods not so dependent on initial prompt
+			- Potentially novel attack approaches compared to LLM-based reformulation done by Deng et al.
+			- But dependent on good transferability from shadow LLM
+		- Tuning and adapting to new objectives via loss
+			- Instead of rephrasing LLM prompt and in-context learning examples
+			- Multiple loss terms to balance several objectives
+				- Objectives can be based on certain application details (e.g. in this case robustness against change in order of judge's candidates in Shi et al.)
+			- Allows for deep specialization of attack
+		- Downsides
+			- ==Add this back if there is room left at the end. Too long for now==
+			- ~~Need for shadow model, dataset, and training time (already mentioned)~~
+			- ~~Fixed attack prompt length~~
+			- ~~No continuous optimization in embedding space~~
+				- ~~Comparison to system prompt tuning in embedding space~~
+				- ~~Hui et al. replace embedding vectors of discrete tokens~~
+				- ~~So they compare performance in embedding space, but the method is still token discrete and not continuous~~
+	- Realistic attack scenarios
+		- Both papers use more realistic scenarios
+			- Shi et al. argue with use of LLM-as-a-judge in search, tool selection and RLAIF
+			- Hui et al. attack publicly available applications
+		- Attack specialization and defense evasion via specialized loss terms
+		- Both use active evasion of defenses
+			- Shi et al. use perplexity loss term
+			- Hui et al. use adversarial transformations
+				- Can evade multiple different types of possible defenses
 - Challenges of Instruction-Data Integration
+	- Separation of instructions and data is best practice in IT security
+		- Goes against LLM architecture
+	- Three classes of defenses
+		- Ascending in potential robustness but descending in applicability
+	- Current defense approaches
+		- Supervision, input sanitation, output filters, sandboxing
+		- Fine-tuning
+		- All work but are always based on existing attacks
+			- Defenses are assumed to be known by attackers
+			- Attacks can be adjusted to evade defenses
+				- Both gradient-based and "creatively" (e.g. adversarial poetry)
+		- Will remain a band-aid fix of current problems
+			- This is what is used in practice
+	- Separating instructions and data
+		- Not possible in a literal way
+			- But approaches to approximate it
+		- Architectural patterns and separating data flows
+		- Separate embeddings
+		- Less directly dependent on current attacks
+			- Might still be evaded by novel approaches but generalize better
+			- Can be widely adopted
+				- But takes mor work than "after the fact" approaches used today
+	- Defending with interpretability
+		- Very short introduction to (mechanistic) interpretability
+		- Understanding attacks on a deep structural or conceptual level
+			- Then applying knowledge to defend (possibly at inference time)
+			- Can also be used to create effective attacks
+		- Might generalize best due to fundamental attack understanding
+			- But MI is in eaaprly development
+			- Currently does not scale even close to SOTA LLM size
 - Conclusion
