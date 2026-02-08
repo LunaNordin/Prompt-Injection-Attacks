@@ -31,17 +31,17 @@ and therefore maximize the probability that the model's response is the desired 
 
 To iteratively find a solution to the optimization problem, \hui and \shi use gradient-based approaches~\cite{hui_pleak_2024, shi_optimization-based_2024}.
 This is done in a three-step process.
+The full iterative algorithm is conceptually depicted in~\cref{fig:optimization_alg}.
 In the first step, the responses of the model for a proposed attack prompt dataset are obtained by inputting the injected prompts into the model and collecting the corresponding output.
 In the second step, the loss of the model's responses is calculated according to~\cref{eq:optimization_loss} while considering the attacker's desired responses for the corresponding attack.
 In the third step, the attack prompts are updated to minimize the calculated loss by approximating the loss of updated attack prompts.
 These three steps are carried out iteratively either for a certain number of iterations or until the algorithm converges.
-The resulting attack prompt dataset then minimizes the defined loss and therefore maximizes the desired model response in prompt injection attacks on systems using that model.
-The full iterative algorithm is conceptually depicted in~\cref{fig:optimization_alg}.\\
+The resulting attack prompt dataset then minimizes the defined loss and therefore maximizes the desired model response in prompt injection attacks on systems using that model.\\
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=\linewidth]{images/prompt_optimization.png}
-    \caption{Iterative optimization of tokens in attack prompts based on a loss function~\cite{shi_optimization-based_2024}.}
+    \includegraphics[width=\linewidth]{images/prompt_optimization.pdf}
+    \caption{Iterative optimization of tokens in attack prompts based on a loss function. Graphic adapted from~\cite{shi_optimization-based_2024}.}
     \Description[<>]{<>}
     \label{fig:optimization_alg}
 \end{figure}

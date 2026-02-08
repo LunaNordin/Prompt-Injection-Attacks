@@ -1,5 +1,6 @@
 \section{Manual Attack Prompt Construction} \label{sec:manual_prompts}
 One key development that enabled the fast adoption of LLM-integrated applications like ChatGPT in late 2022 and early 2023 was the application of reinforcement learning on human feedback (RLHF) to LLMs~\cite{chaudhari_rlhf_2025}.
+This fine-tuning technique aligns an LLM directly with human preference by adjusting its weights based on human feedback on prior outputs, rather than merely maximizing the probability of specific text sequences.
 A prominent example of this approach is the release of the InstructGPT series of models by OpenAI~\cite{ouyang_training_2022}.
 Improved instruction following capabilities make models more usable for a range of different tasks, but they also encourage users to experiment with injecting adversarial prompts into the model's inputs~\cite{willison_prompt_nodate, preamble_discovery_nodate}.
 An early case study investigating the vulnerability of GPT-3 against such basic attacks is the framework proposed by \perez in late 2022~\cite{perez_ignore_2022}.\\
@@ -30,7 +31,7 @@ which would result in the following compromised prompt:
 \subsection{Basic Prompting Techniques} \label{sec:basic_prompting_techniques}
 \perez investigate the influence of different attack instruction formulations, delimiter length, and repetition, as well as model settings like temperature, on the attack success rate.
 Overall, \perez are able to achieve a high attack success rate for goal hijacking of $(58.6 \pm 1.6) \%$ and a success rate of $(23.6 \pm 2.7) \%$ for prompt leaking~\cite{perez_ignore_2022}.
-This is especially noteworthy considering the fact that they use very simplistic techniques that can be applied and adapted by non-expert users with little effort.\\
+This is especially noteworthy considering the fact that such techniques can be applied and adapted by non-expert users with little effort.\\
 
 The most interesting result is the relationship between attack success and instruction following, which is demonstrated by their investigation.
 Many approaches that are demonstrated to increase attack success rate are prompting techniques that are used to improve instruction following in non-adversarial contexts.
@@ -41,13 +42,12 @@ The same parallel holds for the temperature setting of the model.
 
 \subsection{Instruction Following through RLHF} \label{sec:RLHF_instr_following}
 An even more prominent connection between a model's instruction following capabilities and its susceptibility to prompt injection attacks is demonstrated by \perez through the comparison of different LLMs.
-They find that with the same injected prompts, the attack success rate on the model \texttt{text-davinci-002} is much higher than on older and less powerful models~\cite{perez_ignore_2022}.
+They find that with the same injected prompts, the attack success rate on the model \texttt{text-davinci-002} of $(58.6 \pm 1.6)\%$ is much higher than on older and less powerful models like \texttt{text-davinci-001} with an attack success rate of $(30.5 \pm 3.9)\%$~\cite{perez_ignore_2022}.
 A comparison of success rates for the different models investigated by \perez is shown in~\cref{tab:perez_model_comparison}.
 Comparing the models from the InstructGPT and GPT-3.5 series shows that larger models tend to produce higher attack success rates. 
-Another noteworthy observation is the fact that the newest \texttt{text-davinci-002} model shows a much higher attack success rate than the older \texttt{text-davinci-001} model.
 While the number of parameters is undisclosed for \texttt{text-davinci-002}, an important difference between the two similarly named models is that \texttt{text-davinci-002} was not fine-tuned with the RLHF approach published by Ouyang et~al.~\cite{janus_update_2022, mcdonnell_openai_2022}.
 According to co-authors of the paper by Ouyang et~al., the exact models from the paper were not deployed and therefore not available for external research~\cite{jan_leike_janleike_sarahwiegreffe_2022}.
-We want to point out that any conclusions drawn on the exact training methodologies of OpenAI's models are limited in their validity due to OpenAI's non-transparent documentation of model details.\\
+We want to point out that conclusions drawn on the exact training methodologies of OpenAI's models are limited in their validity due to OpenAI's non-transparent documentation of model details.\\
 
 \begin{table}[htb]
     \caption{Comparison of prompt injection success rates on different OpenAI models measured by Perez and Ribeiro~\cite{perez_ignore_2022}. The model parameter numbers are taken from EleutherAI's model analysis~\cite{gao_sizes_2021}.}
@@ -62,7 +62,7 @@ We want to point out that any conclusions drawn on the exact training methodolog
     \end{tabular*}
 \end{table}
 
-The fact that newer and larger models with better instruction following due to improved fine-tuning are more prone to prompt injection techniques suggests that instruction following capabilities are one of the most important limitations of this attack approach.
+The fact that newer and larger models with improved fine-tuning are more prone to prompt injection techniques suggests that instruction following capabilities are one of the most important limitations of this attack approach.
 When presented with two conflicting instructions, namely the task instruction $\textbf{s}^t$ and the injected instruction $\textbf{s}^e$, newer and larger models seem to be more likely to follow the second instruction.
 Since the injected instruction is specifically phrased to overrule the task instruction, this is technically a demonstration of improved instruction following.
 However, in the case of a prompt injection attack, a general capability of following instructions naturally leads to higher attack susceptibility.
@@ -71,6 +71,6 @@ The fact that \texttt{text-davinci-002} also shows high attack success rates dem
 It is noteworthy that the RLHF approach by Ouyang et~al. that was used to fine-tune InstructGPT does not mention robustness against attacks as a primary goal~\cite{ouyang_training_2022}.
 Therefore, it cannot be concluded that RLHF and other fine-tuning approaches inherently decrease model robustness or cannot be used to improve it.
 \perez mention, for example, that goal hijacking attacks are less successful the more harmful the string is that they demand the model to output~\cite{perez_ignore_2022}.
-This result does align with the fine-tuning outcomes of Ouyang et~al., which demonstrated a slightly lower toxicity compared to previous GPT-3 models.
+This result does align with the fine-tuning outcomes of Ouyang et~al., which demonstrated a slightly lower probability of the InstructGPT model outputting harmful or toxic language compared to previous GPT-3 models.
 But it still highlights that not considering prompt injection attacks in early applications of RLHF likely made models more powerful without making them more robust.
 A possibility that is explicitly mentioned by Ouyang et~al. in their conclusions on InstructGPT~\cite{ouyang_training_2022}.\\

@@ -4,41 +4,46 @@ While this approach is well-suited for early experimentation and simple red-team
 Automating parts of manual prompt construction workflows like the one proposed by \perez alleviates these problems to a certain extent.
 In the following, we present and discuss the partial automation of prompt injection attacks on the example of a semi-automated framework proposed by \deng~\cite{deng_attack_2023}.
 
-\subsection{Semi-Automated Attack Framework}
+\subsection{Semi-Automated Attack Framework} \label{sec:semi_automated_framework}
 In their attack framework, \deng automate two steps that were carried out manually in the approach of Perez and Ribeiro.
 The first automation is the rephrasing of attack prompts.
 As pointed out in~\cref{sec:basic_prompting_techniques}, \perez adapt the attack prompts by manually applying generally applicable prompting techniques.
 In contrast to that, \deng leverage the text generation capabilities of LLMs to produce new attack prompts based on an existing set of older attack prompts~\cite{deng_attack_2023}.
-To do so, they use the existing attack prompts as in-context learning examples and task the so-called attack LLM with generating new attack prompt proposals.\\
+To do so, they use the existing attack prompts as in-context learning examples and task the so-called attack LLM with generating new attack prompt proposals (see~\cref{fig:semi_automated_framework} steps~1~\&~2).\\
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=\linewidth]{images/semi_automated_framework.png}
+    \includegraphics[width=\linewidth]{images/semi_automated_framework.pdf}
     \caption{Components and process steps of the semi-automated prompt injection framework proposed by \deng~\cite{deng_attack_2023}.}
     \Description[<>]{<>}
     \label{fig:semi_automated_framework}
 \end{figure}
 
-The second step that \deng automate is the evaluation of proposed attack prompts.
+The second step that \deng automate is the evaluation of proposed attack prompts (see~\cref{fig:semi_automated_framework} step~3).
 While \perez use string comparisons of actual and expected model responses to measure the effectiveness of injected prompts, \deng leverage the text understanding capabilities of LLMs~\cite{perez_ignore_2022, deng_attack_2023}.
 They use an LLM-as-a-judge approach by tasking a so-called evaluation LLM with estimating the harmfulness of the attacked LLM's response.
 The evaluation LLM is tasked with assigning a harmfulness score on a scale of 1 to 10 to each of the target LLM's responses~\cite{deng_attack_2023}.
-The most effective new attack prompts are then added to the attack prompt dataset, and the process can be repeated.\\
+The most effective new attack prompts are then added to the attack prompt dataset (see~\cref{fig:semi_automated_framework} step~4).
+In the next iteration of the process, this updated dataset is then used as in-context learning examples (see~\cref{fig:semi_automated_framework} step~2).\\
 
-All steps of the attack framework proposed by \deng are depicted in~\cref{fig:semi_automated_framework}.
 By iteratively repeating the automated prompt generation and evaluation steps, \deng can create a large set of successful attack prompts based on a small initial attack prompt set without any time-intensive human labor~\cite{deng_attack_2023}.
 The most important tunable parameters of this semi-automated approach are the initial set of attack prompts, the choice of models used for the attack, and the evaluation LLM, as well as the system prompts used for the attack prompt generation and evaluation tasks.
 
 \subsection{Automation Impact} \label{sec:automation_impact}
 The most important advantage of the semi-automated attack framework proposed by \deng is that it eliminates most of the manual steps required by previous approaches and is therefore easily scalable.
 This becomes evident by the fact that \deng are able to produce novel semi-automatic attack prompt (SAP) datasets with hundreds of unique prompts~\cite{deng_attack_2023}.
+These datasets include the SAP5, SAP10, SAP20, SAP30, and SAP200 datasets.
+Each dataset contains eight times as many unique attack prompts as the number stated in its name.
+For example the SAP200 dataset is composed of $200 \times 8 = 1600$ attack prompts~\cite{deng_attack_2023}.
 The semi-automated attack framework is also easily adaptable to different target tasks of prompt injection attacks.
 While \deng use the target task of outputting harmful content in various topics to create the SAP datasets, the target task can be changed by adapting the system prompts of the attack and evaluation LLM, as well as the initial attack prompt dataset~\cite{deng_attack_2023}.
 \\
 
 Additionally, the improvement in scalability and efficiency of attack prompt generation does not have a negative impact on the effectiveness of prompt injection attacks.
-\deng prove this by comparing their SAP datasets with the manually created Dual-Use and the automatically generated BAD+ datasets.
-They find that the SAP30 dataset outperforms both the Dual-Use and the BAD+ datasets on a total of four different variants of the GPT-3.5 and Alpaca-LoRA model families~\cite{deng_attack_2023}.
+\deng prove this by comparing their SAP datasets with two pre-existing datasets.
+The first is the manually created Dual-Use dataset.
+The second comparison dataset is called BAD+, which was created automatically by training a so-called reverse generation model that specifically generates toxic contexts and can be used in inference to produce and enhance attack prompts~\cite{zhang-etal-2022-constructing}.
+\deng find that the SAP30 dataset outperforms both the Dual-Use and the BAD+ datasets on a total of four different variants of the GPT-3.5 and Alpaca-LoRA model families~\cite{deng_attack_2023}.
 A selection of the evaluation results measured by \deng can be seen in~\cref{tab:deng_model_comparison}.
 It is, however, important to notice that \deng apply the same harmfulness score used to generate the SAP datasets as a measure of comparison to evaluate SAP against the other datasets.
 Since the compared datasets were created without taking this specific harmfulness score into consideration, an external metric could provide a more neutral evaluation.\\

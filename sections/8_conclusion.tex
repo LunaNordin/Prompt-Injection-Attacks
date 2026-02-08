@@ -3,16 +3,17 @@ We gave an overview of prompt injection attack techniques against LLMs, beginnin
 Besides the temporal development process of prompt injection approaches, we structured the techniques into two distinct classes.
 One consisting of word-level attack prompt construction and the other containing token-level gradient-based attack prompt optimization.\\
 
-Following the development of prompt injection attacks, we presented a manual approach to creating attack prompts based on general prompting guidelines.
+Following the development of prompt injection attacks, we presented a manual approach to creating attack prompts.
+Analyzing this approach showed that on a fundamental level, the design of injection prompts follows the same general prompting guidelines as non-adversarial prompting.
 We then examined the next development step by discussing a semi-automated approach.
 By comparing the data of several case studies, we concluded that better instruction following, enabled by larger models and better fine-tuning, makes LLMs more susceptible to prompt injection attacks.\\
 
 We proceeded to present the second class of gradient-based approaches, due to the observation that older attack techniques become less effective against newer LLMs.
-By comparing gradient-based approaches to LLM-based attack prompt rephrasing, we highlighted that gradient optimization has the advantages of high attack effectiveness and easy specialization via multiple loss terms.
-We also pointed out the higher complexity of gradient-based approaches, which is due to their need for a shadow model and higher computational effort.
-In reference to the development progress of prompt injection attacks, we noted the more realistic attack scenarios discussed in newer studies.\\
+By comparing gradient-based approaches to LLM-based attack prompt rephrasing, we deduced that gradient optimization has the advantages of high attack effectiveness and easy specialization via multiple loss terms.
+At the same time, gradient-based optimization has the disadvantage of higher complexity, which is due to its need for a shadow model and higher computational effort.
+Besides higher attack success rates on modern LLMs, newer gradient-based studies also consider more realistic attack scenarios.\\
 
-Lastly, we discussed the fundamental problem of instruction-data integration that enables the ongoing high success rates of prompt injection attacks on state-of-the-art LLMs.
+Lastly, we concluded that instruction-data integration poses the fundamental problem that enables the ongoing high success rates of prompt injection attacks on state-of-the-art LLMs.
 We presented three types of defense strategies.
 The band-aid solutions that are currently widely adopted, deeper architectural adjustments with potentially better generalizability, and interpretability-based defenses that could offer a conceptual solution to prompt injection attacks if they become applicable at scale.\\
 

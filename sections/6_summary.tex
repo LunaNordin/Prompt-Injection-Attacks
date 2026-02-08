@@ -1,0 +1,45 @@
+\section{Summary}
+For an easy overview, the most important properties of the methods discussed in~\cref{sec:manual_prompts,sec:automated_prompts,sec:gradient_methods} are displayed in~\cref{tab:summary}.
+The division we introduced in~\cref{sec:injection_approaches} is between the first two and last two approaches.
+The methods by \perez and \deng use rephrasing of prompts on a word-level granularity to increase success rates.
+Meanwhile, \hui and \shi both use gradient-based minimization of specified loss terms to adjust the attack prompts on a token-level.\\
+
+The approach of \perez requires minimal implementation effort, but has the disadvantage of being badly scalable due to the high amount of manual work.
+\deng achieve better scalability by automating parts of the rephrasing process, but still rely on a manually constructed initial attack prompt dataset.
+The approaches of \hui and \shi are the most complex and therefore more complicated to implement.
+However, they have the advantage of involving very little manual human intervention and are therefore highly scalable.\\
+
+In principle, all methods only need black-box access to the target model.
+However, since the gradient-based approaches by \shi and \hui require access to model-internal gradients, they rely on the construction of a shadow dataset and model.
+While this does not contradict the black-box access, it adds additional complexity and implementation effort to these approaches.\\
+
+All approaches can adjust the produced attack prompts, for example, to target a different application or circumvent updated defense mechanisms.
+In the case of \perez, all attack prompts have to be manually rewritten.
+The approach of \deng profits from the automated attack prompt rephrasing and allows the produced attack prompts to be adjusted by changing the prompts given to the attack and the evaluation LLM.
+\hui and \shi can adjust the prompts created by their approaches by either changing the balancing of existing loss terms via hyperparameter adjustments or by adding and removing loss terms entirely.\\
+
+There currently exists a lack of unified benchmarks and attack success rate metrics.
+Therefore, it is not possible to perform a quantitative comparison in addition to the qualitative comparison in~\cref{tab:summary}.
+The diverse attack objectives and target models of the presented methods make it inherently difficult to directly compare the quantitative results stated in different papers.
+For a direct quantitative comparison, the approaches would have to be adjusted in order to consider identical target models and attack objectives.
+
+\begin{table*}[htb]
+    \centering
+    \caption{Qualitative comparison of key properties of different attack prompt construction approaches.}
+    \begin{tabular}{@{}cccccccc@{}}
+        \toprule
+        \multirow{2}{*}{\makecell{Paper \\ (Authors)}} & \multirow{2}{*}{\makecell{Construction\\Method}} & \multirow{2}{*}{\makecell{Optimization\\Granularity}} & \multirow{2}{*}{\makecell{Implementation\\Complexity}} & \multirow{2}{*}{\makecell{Scalability}} & \multirow{2}{*}{\makecell{Target Model\\Access}} & \multirow{2}{*}{\makecell{Prompt\\Adjustment}} \\ 
+        & & & & & & \\
+        \midrule
+        \makecell{Perez and\\Ribeiro}&\makecell{rephrasing}&\makecell{word-level}&\makecell{low}& \makecell{low}&\makecell{black-box}&\makecell{manual\\rewriting}\\[.4cm]
+        
+        \makecell{\deng}&\makecell{rephrasing}&\makecell{word-level}&\makecell{medium}&\makecell{medium}& \makecell{black-box}&\makecell{generation prompt \\adjustment}\\[.4cm]
+        
+        \makecell{\hui}&\makecell{gradient-based\\loss minimization}&\makecell{token-level}&\makecell{high}&\makecell{high}&\makecell{black-box\\(shadow model)}&\makecell{loss term\\adjustment}\\[.4cm]
+        
+        \makecell{\shi}&\makecell{gradient-based\\loss minimization}&\makecell{token-level}&\makecell{high}&\makecell{high}&\makecell{black-box\\(shadow model)}&\makecell{loss term\\adjustment}\\
+        
+        \bottomrule
+    \end{tabular}
+    \label{tab:summary}
+\end{table*}
