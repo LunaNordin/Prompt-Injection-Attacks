@@ -67,34 +67,43 @@
 	- Makes it easier to add citations later
 
 ### From Paper Reviews
-- Redo all the graphics
-	- Use a uniform styling and colors
-	- Depict the variables introduced in the introduction and methods in the figures
-- When comparing success rate results with "higher"/"lower" give concrete numbers or reference a table containing those numbers
-- Check the use of adjectives. Make sure not to "double state" facts but use one coherent sentence to point them out. A pattern seems to be a first sentence using an abstract adjective and after that a second sentence stating that same fact again/more precisely 
-	- e.g. "very simplistic techniques" in 3.1. Mentioning no expert is needed to apply the techniques seems sufficient
-- Introduce at least one additional defense in chapter 6 that is currently applicable in more depth. This will make the discussion of defense approaches less abstract (mostly talking about future/theorized approaches)
-	- Mention that the approaches are efficiently implementable and do not suffer from limitations in terms of resources/immediate performance but long-term effectiveness
-	- Describe against which attack approaches certain defenses are most effective or explicitly state their "general" effectiveness
-	- Maybe also emphasize more that all current defenses (fine-tuning and others) suffer from the same problem of being based on training on old attacks
-	- Also highlight that the main issue with current defenses is, that they do not address the issue of instruction-data integration
-- Add a comparison table that highlights and compares the properties (not the performance numbers) of the discussed approaches
-	- Categories could be: access type, transferability, scalability (would have to be discussed for each method), runtime, human effort, overhead
-	- This table could be introduced/discussed in a short "Discussion" chapter before talking about defenses and future work
-- State more explicitly why a quantitative comparison of attack and defense performance/effectiveness is not possible (lack of standardized metrics and benchmarks, etc.)
-- Threat model needs to be updated with some things
-	- Distinguish prompt injection explicitly from jailbreaking
-	- Add an explanation on the notion of black- and white-box access
-		- Also make clear which methods use black-box access before distinguishing them from methods that use white-box access
-- Explain the relation between SAP as a general method/dataset creation and the concrete datasets like SAP30 (just make clear what the "30" stands for)
-	- Also add a short sentence on the origin of the BAD+ and Dual-Use datasets
-- Mix in the key findings of the comparison/discussion into the conclusion more explicitly. Do not just state *what* was done but also *why* it was done and what came from it
-- Remove keywords "fine-tuning" and RLHF (they are not relevant enough).  Potentially replace with keyword "prompt injection defenses"
-- Fix the use of unintroduced "LLM" in the abstract
-- Add a sentence on what the "toxicity" metric describes
-- Re-state or reference the definition of "harmfulness score" in the repeated usage of this metric in Section 6.1
-- Introduce the concept of RLHF in one or two sentences at first mention
-- Add citations for "ChatGPT, Gemini, and Claude" in Section 2.1
-- Move reference to figure 3 to the beginning of the paragraph describing it
-- Maybe change the title to "Prompt Injection Attacks on Large Language Models" if it is allowed
-- Fix wrong protected white space "in–Figure" in Section 2.3
+- ~~Redo all the graphics~~
+	- ~~Use a uniform styling and colors~~
+	- ~~Depict the variables introduced in the introduction and methods in the figures~~
+- ~~When comparing success rate results with "higher"/"lower" give concrete numbers or reference a table containing those numbers~~
+- ~~Check the use of adjectives. Make sure not to "double state" facts but use one coherent sentence to point them out. A pattern seems to be a first sentence using an abstract adjective and after that a second sentence stating that same fact again/more precisely~~ 
+	- ~~e.g. "very simplistic techniques" in 3.1. Mentioning no expert is needed to apply the techniques seems sufficient~~
+- ~~Introduce at least one additional defense in chapter 6 that is currently applicable in more depth. This will make the discussion of defense approaches less abstract (mostly talking about future/theorized approaches)~~
+	- ~~Mention that the approaches are efficiently implementable and do not suffer from limitations in terms of resources/immediate performance but long-term effectiveness~~
+	- ~~Describe against which attack approaches certain defenses are most effective or explicitly state their "general" effectiveness~~
+	- ~~Maybe also emphasize more that all current defenses (fine-tuning and others) suffer from the same problem of being based on training on old attacks~~
+	- ~~Also highlight that the main issue with current defenses is, that they do not address the issue of instruction-data integration~~
+- ~~Add a comparison table that highlights and compares the properties (not the performance numbers) of the discussed approaches~~
+	- ~~Categories could be: access type, transferability, scalability (would have to be discussed for each method), runtime, human effort, overhead~~
+	- ~~This table could be introduced/discussed in a short "Discussion" chapter before talking about defenses and future work~~
+- ~~State more explicitly why a quantitative comparison of attack and defense performance/effectiveness is not possible (lack of standardized metrics and benchmarks, etc.)~~
+- ~~Threat model needs to be updated with some things~~
+	- ~~Distinguish prompt injection explicitly from jailbreaking~~
+	- ~~Add an explanation on the notion of black- and white-box access~~
+		- ~~Also make clear which methods use black-box access before distinguishing them from methods that use white-box access~~
+- ~~Explain the relation between SAP as a general method/dataset creation and the concrete datasets like SAP30 (just make clear what the "30" stands for)~~
+	- ~~Also add a short sentence on the origin of the BAD+ and Dual-Use datasets~~
+- ~~Mix in the key findings of the comparison/discussion into the conclusion more explicitly. Do not just state *what* was done but also *why* it was done and what came from it~~
+- ~~Remove keywords "fine-tuning" and RLHF (they are not relevant enough).  Potentially replace with keyword "prompt injection defenses"~~
+- ~~Fix the use of unintroduced "LLM" in the abstract~~
+- ~~Add a sentence on what the "toxicity" metric describes~~
+- ~~Re-state or reference the definition of "harmfulness score" in the repeated usage of this metric in Section 6.1~~
+- ~~Introduce the concept of RLHF in one or two sentences at first mention~~
+- ~~Add citations for "ChatGPT, Gemini, and Claude" in Section 2.1~~
+- ~~Move reference to Figure 3 to the beginning of the paragraph describing it~~
+- ~~Maybe change the title to "Prompt Injection Attacks on Large Language Models" if it is allowed~~
+- ~~Fix wrong protected white space "in–Figure" in Section 2.3~~
+
+
+
+| Paper<br>(authors) | Construction<br>method               | Granularity | Implementation<br>complexity | Scalibility | Target model<br>access           | Target<br>adjustment               |
+| ------------------ | ------------------------------------ | ----------- | ---------------------------- | ----------- | -------------------------------- | ---------------------------------- |
+| Perez              | Re-phrasing                          | word-level  | low                          | low         | black-box                        | manual<br>rewriting                |
+| Deng               | Re-phrasing                          | word-level  | medium                       | medium      | black-box                        | generation<br>prompt<br>adjustment |
+| Hui                | Gradient-based <br>loss minimization | token-level | high                         | high        | black-box<br>(with-shadow model) | loss term<br>adjustment            |
+| Shi                | Gradient-based <br>loss minimization | token-level | high                         | high        | black-box<br>(with-shadow model) | loss term<br>adjustment            |

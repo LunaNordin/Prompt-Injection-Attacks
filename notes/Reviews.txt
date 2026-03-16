@@ -1,0 +1,275 @@
+HoT-X Conference 2026 Paper #5 Reviews and Comments
+===========================================================================
+Paper #5 Prompt Injection Attacks
+
+
+Review #5A
+===========================================================================
+
+Overall merit
+-------------
+4. Accept
+
+Reviewer expertise
+------------------
+2. Some familiarity
+
+Paper summary
+-------------
+The Paper provides a comprehensive overview over prompt injection attacks, by starting with a formal definition and building on to observe distinctions in techniques within current literature. Construction and optimization of attack prompts is defined within two techniques used. Taking previous research into account it was pointed out that with age specific exploits lose effectiveness due to further fine-tuning of state of the art LLMs, as a solution Gradient-Based Prompt optimization was discussed and examined. After describing techniques to aid attackers and the problem of LLMs weakness in reliably separating data and instructions, current defense techniques were presented. To defend against prompt attacks more generalization and a deeper interpretability into models was advised.
+
+Comments for authors
+--------------------
+Strengths
+-Very comprehensive introduction and background, that's easy to follow along.
+-Nice structure building on previously introduced topics from basics to current literature.
+-Graphics and tables are always informative and relevant to the topics.
+
+Overall I had an easy time following the papers intentions and the relation between different concepts. A general definition was made and topics weren't rushed but introduced by building on it.
+It was very successful in providing a basic overview and relating it to current literature.
+
+Weaknesses
+-In multiple parts, success rates are compared with the words higher and lower. I would recommend simply adding some of the specific numbers to give a better idea to the reader if no table was provided.
+
+- RLHF is repeatedly an important part throughout the mid-section. But the introduction doesn't introduce it. I would recommend adding one or two sentences why it is a key development.
+
+-Sometimes the use of adjectives seem unnecessary and the rest of the sentence already provided the information, like "very simplistic techniques" in 3.1. Mentioning no expert is needed to apply the techniques seems sufficient.
+
+-2.2 The introduction of the Threat model, the first paragraph is a bit hard to follow, and the first sentence could be shortened or made more specific to the topic.
+
+-Only fine-tuning is mentioned and dismissed as sufficient defense. Maybe mention another defense, if better interpretability or generalization are still conceptual. It would better illustrate why prompt attacks are still a high threat as you conclude.
+
+
+
+Review #5B
+===========================================================================
+
+Overall merit
+-------------
+4. Accept
+
+Reviewer expertise
+------------------
+2. Some familiarity
+
+Paper summary
+-------------
+This paper presents a comprehensive systematization of command-line injection attacks against large language models.
+The author provides a formal definition and threat model for command-line injection and categorizes current attack techniques into two main categories: word-level command-line generation and token-level gradient-based optimization.
+The paper investigates the historical development of command-line injection attacks, which started with basic manual techniques before developers implemented automated and performance-enhanced attack methods.
+Additionally, the paper examines the core problem of LLMs, which involves uniting instruction data, and presents various defense methods that researchers are currently developing.
+As a result, the paper presents a systematic analysis of command-line injection, which avoids both attacking and defending systems.
+
+Comments for authors
+--------------------
+STRENGTHS
+- The paper addresses a relevant and timely security issue in modern LLM-based systems.
+- The systematization of prompt injection attacks is clear and well-motivated as word-level and token-level approaches
+- The threat model, together with formal definitions, establishes a strong base that supports all following analysis.
+- The paper investigates a wide range of current studies, which include modern gradient-based attacks.
+- The defense strategy analysis provides complete information about defense strategies, which include interpretability-based defense approaches.
+WEAKNESSES
+- The paper contains detailed summaries of previous research, but it could be better to evaluate different methods through a more analytical assessment process.
+- The explanation of prompt injection needs additional details to distinguish it from other attack types, which include jailbreaking.
+-The discussion about defenses exists at a theoretical level, but it fails to provide sufficient information about their actual constraints, which affect their deployment in operational environments.
+COMMENTS
+-The paper would benefit from a comparative table that shows how different attack methods differ through their necessary attacker information, their access requirements, and their ability to transfer between systems.
+-The paper needs additional analysis to demonstrate the distinct characteristics of rephrasing-based attacks relative to gradient-based attacks for achieving a unified approach between these two methods.
+-The defense section requires better direction, which should show both current methods for immediate use and future research directions.
+- Overall clarity and organization are strong, and only minor refinements are needed.
+Conclusion
+Overall, the paper contains a thorough and well-structured evaluation of prompt injection attack knowledge.
+The paper demonstrates complete understanding of previous studies through its effective presentation of attacker method development and defender strategic adaptations.
+The reference would become an even more effective resource for studying this subject when analyzed at a deeper critical level.
+
+
+
+Review #5C
+===========================================================================
+
+Overall merit
+-------------
+4. Accept
+
+Reviewer expertise
+------------------
+2. Some familiarity
+
+Paper summary
+-------------
+This paper presents a systematized overview of prompt injection attacks, distinguishing between manual, semi-automatic, and automatic approaches. The authors further provide a chronological analysis of techniques used in key works, comparing results and highlighting fundamental shifts in attack methodologies. They observe a clear trend toward increasingly automated attacks, accompanied by a rise in granularity from word-level to token-level manipulations. Finally, the authors introduce three classes of defense mechanisms against prompt injection attacks and discuss their potential for future development and employment.
+
+Comments for authors
+--------------------
+Strengths:
+- the language used in this paper is clear and precise
+- advantages and limitations of attack approaches are precicely and clearly formulated
+- the paper presents a well-reasoned and consistent threat model, while also discussing its limitations clearly
+- The authors clearly and precicely differentiate between manual, semi-automatical and gradient-based prompt generation techniques.
+- the paper provides insights by comparing results of different papers, judging and discussing the insights and its limitations, while also evaluating, if that insight aligns with that of previous works.
+
+Weaknesses:
+- The paper might benefit from a "Related Works" section, placing prompt injection attacks in context adequately
+- Since you mainly present and evaluate different defense approaches in Chapter 6, you might want to rename this chapter.
+- Another illustration as in figure 1, but showing the general case of use without attacker could benefit the understanding of the reader. Here, you can also nicely include the variables introduced in chapter 2.3
+
+Minor Remarks:
+- You already use the abbreviation "LLM" in the abstract withouth introducing it first.
+- You mention SAP30 (and later also SAP5 and SAP10) withouth introducing it. What is it and what is the difference to SAP?
+- What is the automatically generated BAD+ Dataset. How did it get generated?
+- The first paragraph of the introduction has a significant number of citations, while tangeting only slightly related topics.
+- While the order of chapters in very good, I noticed an unintuitive structure of chapters, following a consecutive approach more than a hierarchical approach. You might benefit from renaming or restructuring sections and section headers.
+- In general, screen-shotting illustrating is not a good-practice. Your paper would benefit from redesigning or re-illustrating those figures. If you decide to use screenshots non-the-less, make sure to clearly state that the figure is taken from the original paper, and not from you. If you decide to re-illustrate the figures yourself, make sure their design is clear and also uniform accross the figures used in your paper.
+
+
+
+Review #5D
+===========================================================================
+
+Overall merit
+-------------
+4. Accept
+
+Reviewer expertise
+------------------
+2. Some familiarity
+
+Paper summary
+-------------
+The provided paper provides a comprehensive overview of prompt injection attacks in the context of LLMs. The author categorizes these attacks into two main classes: First, the manual and semi-automated approaches, which do prompt-generation at word-level. Second, gradient-based approaches that optimize the prompt at token-level. After providing a threat model, the approaches are presented in a chronological timeline. After introducing the first class of attacks, the author reports the observation that such approaches are less effective against newer models due to improved fine-tuning strategies. The second class is then presented to highlight their continued effectiveness even against more recent models. Finally, the paper identifies the simultaneous processing of data and instructions by LLMs as a central challenge for defenses against prompt injection attacks and therefore discusses defense strategies intended to address this issue.
+
+Comments for authors
+--------------------
+STRENGTHS
+
+- Strong language:
+The proposed paper is well-written and therefore reads smoothly.        
+- Discussing defenses:
+With the presented defenses at the end, the paper closes a cycle by also addressing the arms race between defenders and attackers. Furthermore, it makes sense that the author explained the data-instruction-mixture, which makes life for attackers easier while being challenging for defenders.        
+- Comparison of the approaches:
+The proposed techniques are compared in very high detail by mentioning advantages and limitations.        
+- Timeline:
+Writing the paper chronological supports the understanding of why the manual and semi-automated attacks are not that effective on newer models.
+        
+WEAKNESSES
+
+- Structure:
+Although I am a fan of the timeline approach, comparison and explanations seems to be mixed a bit, which could be challenged by introducing another section that only serves to compare approaches based on performance (this could include a differentiation between performance on older and never models)        
+- Figure 3:
+You reference your figure at the end of a paragraph after you explain the process. It would be nicer to reference it at the beginning so readers can directly use it to understand your words. Furthermore (personal opinion), the caption of the figure could already briefly explain the process.        
+- Conclusion:
+The conclusion seems to be more a summary. Is dividing the conclusion into a summary part and a “finding” part an option?        
+- Missing discussion:
+As mentioned before, the comparisons of approaches are mixed with their presentation. The findings could be part of a discussion before the conclusion at the end (e.g. the last paragraph in 4.3 is a candidate for the discussion).        
+
+COMMENTS
+
+- “Black-box” not explicitly mentioned in the threat model:    
+In section 5.2, it is stated verbatim that you threat model assumes black-box access to the model. It would improve clarity to mention this explicitly already in the introduction of the threat model.        
+- Visual overview of the presented techniques:
+You provide long text-based comparisons of the approaches. Providing a table or chart that shortly introduces mechanisms and their differences could be helpful to better overlook them.        
+- “toxicity”:
+In section 3.2 you mention “toxicity”. Maybe I am the only one, but I did not get the statement at this point.        
+
+CONCLUSION
+
+The proposed paper provides a profound overview of prompt injection attacks. The aforementioned weaknesses are minor and do not diminish the scientific importance. By additionally discussing defense strategies, the author even exceeds the paper’s original scope.
+
+
+
+Review #5E
+===========================================================================
+
+Overall merit
+-------------
+4. Accept
+
+Reviewer expertise
+------------------
+2. Some familiarity
+
+Paper summary
+-------------
+The paper provides a systematic overview of prompt injection attacks on LLMs. First, a formal definition and threat model are introduced. Existing attack techniques are then divided into two main classes:  Word-level attack prompt construction and token-level gradient-based attack prompt optimization. The development of the attacks is viewed chronologically. Earlier work focuses in particular on simple or manual techniques, while more recent research relies on automated and fine-grained methods. It is observed that word-based attacks are becoming less effective due to improved fine-tuning of LLMs. In contrast, gradient-based approaches are highly effective even against current models. The authors identify the lack of reliable separation of instructions and data in LLMs as a central problem. Finally, defense approaches are presented and discussed.
+
+Comments for authors
+--------------------
+Strengths
+- Highly topical and relevant security issue. The paper focuses on an important and timely security issue affecting modern LLM-based systems.
+- Clear and well-motivated systematization of attacks. The classification into manual, semi-automated, and gradient-based attacks is well motivated and provides a clear structure for comparison.
+- Very clear and fluid writing style. The paper is written in a clear and readable manner, with a clean overall structure and strong coherence between sections.
+- Meaningful chronological structure. The chronological organization helps the reader understand the evolution of prompt injection attacks and why older techniques are less effective on newer models.
+- Good presentation of advantages and limitations. The strengths and limitations of the individual approaches are clearly described, enabling a balanced assessment.
+	
+
+Weaknesses
+- Lack of explicit research question and main contributions. The introduction would benefit from clearly stating a research question and summarizing the main contributions in bullet points for quick identification.
+- Inappropriate keyword. The keyword "fine-tuning" does not appear to be well aligned with the core focus of the paper.
+- Threat model too unspecific. The threat model lacks precision and should focus more explicitly on prompt injection attacks. In its current form, it could partially also describe jailbreak attacks.
+- Predominantly theoretical discussion of defense strategies. The discussion of defenses remains largely theoretical and does not sufficiently consider practical constraints such as scalability or deployment challenges.
+- Weak emphasis on key findings in the conclusion. The conclusion mainly summarizes the paper instead of emphasizing the key insights and takeaways.
+	
+	
+Further comments
+- The title could be made more precise by adding "on Large Language Models".
+- The abbreviation "LLM" is used in the abstract without being defined beforehand. In addition, there is a missing space in "groups.We"
+- In some cases, vague terms such as "higher" (e.g., in the abstract) are used without clearly specifying what they refer to.
+- Minor formal errors: In Section 2.3, an incorrect hyphen is used ("in-Figure").
+- Missing references: In Section 2.1, models such as ChatGPT, Gemini, and Claude are mentioned without direct references; these are only introduced later.
+- Unclear terms: In Section 4.2, the term "SAP30" is used without first explaining it or providing a reference.
+- The text in Figure 2 is difficult to read. The graphic should be redone, ideally with larger text and better readability.
+	
+
+Conclusion
+The paper provides a clear and well-structured overview of prompt injection attacks against large language models and addresses a highly relevant security problem. While the systematization and writing quality are strong, improvements in the clarity of the introduction, the specificity of the threat model, the practical discussion of defenses, and the presentation details would further strengthen the overall contribution and impact of the work.
+
+
+
+Comment @A1 by Pascal Rockenstiehl <REDACTED FOR SHEPHERD PRIVACY> (Shepherd)
+---------------------------------------------------------------------------
+Summary of the PC Meeting:
+
+
+Strengts:
+- The paper has a well-fitting overall structure as well smooth connections between individual sections.
+- The introduction as well as the background section do an excellent job at highlighting that prompt injection attacks are a structural problem.
+- The chronological structure when presenting the different methods combined with motivating design choices out of that perspective ensure a smooth read through the paper.
+- Table 1 exhibits an excellent example of a well-reasoned table discussed in the text, that is used to support an argument.
+- Presenting defensive approaches towards the end of the paper provides an additional overview and outsight.
+
+
+Points for improvement:
+- While Figure 1 already does a good job at illustrating the position, we beliefe it can be improved by incorporating the variables introduced in section 2.
+- The comparison of performances - while indeed present - only happens vaguely in this paper. We instead would like to see explicit numbers or alternatively a reasoning, why this is not possible
+- At the beginning of section 3, you introduce RLHF as a "key development". We believe further formulating an explanation about this concept in 2-3 sentences would match the importance of this development.
+- Generally, we noticed multiple instances of sentence formulations, where adjectives were used to describe something, only for the succeeding sentence to essentially state the exact same thing. Compromising such instances into shorter form without reducing its semantic meaning would help keeping the paper dense.
+- While clearly acknowledging the value section 6 provides, we do think it could focus more on evaluating the defense approaches (against which attack method they perform how well, maybe also using numbers for this if available) or presenting more defenses, rather than focusing on generalization and interpretability.
+- The terms "black-box" and "white-box" are used in section 5.2 without defining or explaining them beforehand. It furthermore would be adequate to explicitly state at the presentation of the previous attack approaches, that those are black-box approaches (instead of only mentioning this in the only white-box approach as it is done now)
+- the paper as is is very text-based and would benefit from a visual overview like a table or a figure over the different approaches.
+- The paper additionally would benefit from redoing all the figures in a uniform style instead of incorporating screenshots from cited work.
+- the harmfullness score - while being defined in section 4.1 and used in section 4.2 only occur again in section 6.1, making it hard to remember their exact meaning. A short fresher-up or a reference to the definition would be welcome here.
+- The term "toxicity" is used in section 3.2 without explaining what it means, causing some confusion in us as the readers.
+- The threat model could be adjusted slightly to more closely fit prompt injection attacks.
+- The keywords of the paper should be adjusted to only include major techniques. Concretely, this means removing "fine-tuning" from this list.
+
+
+Overall, we really like the paper and want to again highlight its strengts and its contribution to science. Since all the proposed improvements are only minor or only addressing phenotypical issues and the content of the paper leaves little room for improvement, we all agree on accepting this work.
+
+
+Comment @A2 by Frederik Schittny <uolrr@student.kit.edu> (Author)
+---------------------------------------------------------------------------
+Thank you to all reviewers for your valuable feedback. I have adjusted and improved the following points in my paper accordingly:
+
+I added an overview table comparing the four presented approaches qualitatively. The table is introduced/explained in a new "Summary" chapter. This new chapter does not feature a discussion since that is already part of the presentation of the approaches. But it does comprehensively restate the main comparisons by following the new table.
+
+I updated the section on the threat model by adding an explanation of the black-box notion used in all presented approaches and explicitly distinguished prompt injection attacks from jailbreaking attacks.
+
+I re-created all graphics in a uniform style and included the notations and symbols used in my paper.
+
+I changed some formulations in the conclusion to highlight the key findings as conclusions or results rather than just describing them as an ordered list of the paper's contents.
+
+I fixed several small mistakes and added explanations to terms like "toxicity", "RLHF", and the SAP and BAD+ datasets.
+
+I did not, however, give a more comprehensive introduction to the currently employed defenses against prompt injection. While I am very interested in this topic, I decided that the other changes were more important, given that the topic of my paper is prompt injection attacks. I therefore kept the focus on the conceptual basis that prompt injection is based on and the more conceptual defense approaches as a sort of "outlook onto potential future developments". Ultimately, the page limit does not allow me to go into more detail on current defense approaches. An entire additional SoK-paper could be written on this topic, as was done with the related papers on "Jailbreaking Attacks" and "Jailbreaking Defenses".
+
+If there are any remarks regarding the updated version, feel free to contact me. The individual changes can be found in the attached LaTeX-Diff.
